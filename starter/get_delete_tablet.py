@@ -3,7 +3,6 @@ import json
 import collections
 from collections import OrderedDict
 
-
 mem_table = {'table_kill': {'sample_a': {'fam1:key1': OrderedDict([(12350, '6'), (12351, '7'), (12352, '8')])}}}
 # sstable = {}
 # get_table = ['List Table', 'Get Table Info', 'Retrieve a cell', 'Retrieve cells']
@@ -48,13 +47,9 @@ class MyHandler(BaseHTTPRequestHandler):
             self._set_response(200)
             # self.wfile.write(data_json.encode("utf8"))
 
-
     def retrieve_range(self, table_name):
         # TODO retrieve cells from mem table and disk
         self._set_response(200)
-
-
-
 
     def do_GET(self):
         # example: this is how you get path and command
@@ -85,13 +80,11 @@ class MyHandler(BaseHTTPRequestHandler):
                 print(table_name)
                 self.retrieve_cell(table_name)
 
-
-
     def do_POST(self):
         # example: reading content from HTTP request
         data = None
         content_length = self.headers['content-length']
-    
+
         if content_length != None:
             content_length = int(content_length)
             data = self.rfile.read(content_length)
@@ -114,9 +107,10 @@ if __name__ == "__main__":
     httpd = HTTPServer(server_address, handler_class)
     print("sample server running...")
 
-    try: 
+    try:
         httpd.serve_forever()
-    except KeyboardInterrupt: pass
+    except KeyboardInterrupt:
+        pass
 
     httpd.server_close()
 
