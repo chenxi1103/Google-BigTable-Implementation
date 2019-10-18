@@ -26,12 +26,40 @@ def check_tables():
     print("============= Memtables ===============")
     print(memtables)
 
-# def spill_to_the_disk():
-# with open(DISK_PATH + "database.json", "w") as db:
-# json.dump()
-# if num_row_key >= tables_max_size:
-#     for table in memtables:
+def spill_to_the_disk():
+    if num_row_key >= tables_max_size:
+        for table in memtables:
+            try:
+                with open(DISK_PATH + str(table) + ".json", "r") as db:
+                    load_table = json.load(db)
+                    print("============= disk table ===============")
+                    print(load_table)
 
+                    with open(DISK_PATH + table + ".json", "w") as new_db:
+                        for row_key in memtables[table]:
+                            if row_key in load_table:
+                                for column in memtables[table][row_key]:
+                                    for data in memtables[table][row_key][column]:
+                                        load_table[row_key][column][data] = memtables[table][row_key][column][data]
+                                        if len(load_table[row_key][column]) > 5:
+                                            load_table[row_key][column].popitem(last=False)
+                            else:
+                                load_table[row_key] = memtables[table][row_key]
+                                print("modified load table")
+                                print(load_table)
+                        load_table = dict(sorted(load_table.items(), key = lambda x: x[0]))
+                        json.dump(load_table, new_db)
+            except:
+                with open(DISK_PATH + table + ".json", "w") as db:
+                    sorted_table = dict(sorted(memtables[table].items(), key = lambda x : x[0]))
+                    json.dump(sorted_table, db)
+        # clean memtables
+        clean_memtables()
+
+def clean_memtables():
+    memtables.clear()
+    global num_row_key
+    num_row_key = 0
 
 def create_table(input):
     table_name = input["name"]
@@ -137,6 +165,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 elif path_1 == 'tables' and len(request_path.split("/")) > 3:
                     table_name = request_path.split("/")[3]
                     if insert_cell(data, table_name):
+                        spill_to_the_disk()
                         self._set_response(200)
                     else:
                         self._set_response(409)
