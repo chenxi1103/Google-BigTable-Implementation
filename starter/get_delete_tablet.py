@@ -110,18 +110,13 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(data_json.encode("utf8"))
             return
 
-    def retrieve_a_row(self, table_name):
-        content_length = self.headers['content-length']
-        if content_length:
-            content_length = int(content_length)
-            data = str(self.rfile.read(content_length).decode("utf-8"))
-            data_json = json.loads(data)
-            row_name = data_json.get("row")
-
-
-
-
-
+    # def retrieve_a_row(self, table_name):
+    #     content_length = self.headers['content-length']
+    #     if content_length:
+    #         content_length = int(content_length)
+    #         data = str(self.rfile.read(content_length).decode("utf-8"))
+    #         data_json = json.loads(data)
+    #         row_name = data_json.get("row")
 
     def do_GET(self):
         # example: this is how you get path and command
