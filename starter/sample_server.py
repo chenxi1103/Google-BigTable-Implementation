@@ -380,6 +380,7 @@ class MyHandler(BaseHTTPRequestHandler):
             data = str(self.rfile.read(content_length).decode("utf-8"))
             if not check_json(data):
                 self._set_response(400)
+                return
 
             request_path = self.path
             if len(request_path.split("/")) >= 3:
@@ -438,8 +439,6 @@ class MyHandler(BaseHTTPRequestHandler):
                         return
                     elif table_name in memtables:
                         # if table in memtable
-                        print("before")
-                        print(memtables)
                         removed_dic = memtables.pop(table_name)
                         # delete table_columns
                         # remove table from table lists
@@ -448,6 +447,7 @@ class MyHandler(BaseHTTPRequestHandler):
                             del tables_columns[table_name]
                         if table_name in tables_rows:
                             del tables_rows[table_name]
+                        write_ahead_log(4, table_name, "")
                         self._set_response(200)
                     else:
                         # table in disk
@@ -456,11 +456,12 @@ class MyHandler(BaseHTTPRequestHandler):
                             if file == table_name + ".json":
                                 file_path = os.path.join("disk/", file)
                                 os.remove(file_path)
+                        write_ahead_log(4, table_name, "")
                         self._set_response(200)
 
 
 if __name__ == "__main__":
-    server_address = ("localhost", 8081)
+    server_address = ("localhost", 8080)
     handler_class = MyHandler
     server_class = HTTPServer
 
