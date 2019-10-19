@@ -11,8 +11,10 @@ memtables = {"table_kill": {'sample_a': {'fam1:key1': OrderedDict([(12350, '6'),
 # get_table = ['List Table', 'Get Table Info', 'Retrieve a cell', 'Retrieve cells']
 # post_table = ['Create Table', 'Insert a cell']
 # delete_table = ['Destroy Table']
-table_list = {"tables": []}
+table_list = {"tables": ["table_kill"]}
 tables_info = {}
+tables_columns = {}
+tables_rows = {}
 
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -29,7 +31,7 @@ class MyHandler(BaseHTTPRequestHandler):
         if content_length:
             content_length = int(content_length)
             data = str(self.rfile.read(content_length).decode("utf-8"))
-            print(data)
+            # print(data)
             data_json = json.loads(data)
             row_value = data_json.get("row")
             cell_dic["row"] = row_value
@@ -108,6 +110,18 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(data_json.encode("utf8"))
             return
 
+    def retrieve_a_row(self, table_name):
+        content_length = self.headers['content-length']
+        if content_length:
+            content_length = int(content_length)
+            data = str(self.rfile.read(content_length).decode("utf-8"))
+            data_json = json.loads(data)
+            row_name = data_json.get("row")
+
+
+
+
+
 
     def do_GET(self):
         # example: this is how you get path and command
@@ -124,7 +138,7 @@ class MyHandler(BaseHTTPRequestHandler):
                     self.wfile.write(data_json.encode("utf8"))
                 # Get Table info
                 elif len(url) == 3:
-                    table_name = url[2].split(':')[-1]
+                    table_name = url[2]
                     if table_name in tables_info:
                         data = tables_info.get(table_name)
                         data_json = json.dumps(data)
@@ -141,6 +155,9 @@ class MyHandler(BaseHTTPRequestHandler):
                 # retrieve cells from range
                 table_name = url[2]
                 self.retrieve_range(table_name)
+            elif url[0] == 'api' and url[1] == 'table' and url[-1] == 'row':
+                table_name = url[2]
+                self.retrieve_a_row(table_name)
 
 
     def do_POST(self):
@@ -159,8 +176,40 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         # example: send just a 200
-        self._set_response(200)
-
+        # self._set_response(200)
+        content_length = self.headers['content-length']
+        if content_length:
+            content_length = int(content_length)
+            data = self.rfile.read(content_length)
+            url = self.path.split('/')[1:]
+            if len(url) >= 2:
+                if url[1] == "tables":
+                    table_name = url[2]
+                    if table_name not in table_list["tables"]:
+                        # table not exist in table list
+                        self._set_response(404)
+                        return
+                    elif table_name in memtables:
+                        # if table in memtable
+                        print("before")
+                        print(memtables)
+                        removed_dic = memtables.pop(table_name)
+                        # delete table_columns
+                        # remove table from table lists
+                        table_list["tables"].remove(table_name)
+                        if table_name in tables_columns:
+                            del tables_columns[table_name]
+                        if table_name in tables_rows:
+                            del tables_rows[table_name]
+                        self._set_response(200)
+                    else:
+                        # table in disk
+                        table_list["tables"].remove(table_name)
+                        for file in os.listdir("disk/"):
+                            if file == table_name + ".json":
+                                file_path = os.path.join("disk/", file)
+                                os.remove(file_path)
+                        self._set_response(200)
 
 if __name__ == "__main__":
     server_address = ("localhost", 8083)
