@@ -27,6 +27,11 @@ DISK_PATH = "disk/"
 # Metadata & WAL log location
 META_WAL_PATH = "META_WAL/"
 
+ROW_META_FILE_NAME = "row.meta"
+COL_META_FILE_NAME = "col.meta"
+WAL_LOG_FILE_NAME = "wal.log"
+MEMTABLE_SIZE_FILE_NAME = "memtable_max_size.meta"
+
 
 def get_disk_json(table_name):
     list = []
@@ -40,24 +45,24 @@ def get_disk_json(table_name):
 
 
 def metadata_for_row_index(table_name, row_key):
-    with open(META_WAL_PATH + "row.meta", "a") as meta:
+    with open(META_WAL_PATH + ROW_META_FILE_NAME, "a") as meta:
         meta.write(str(table_name) + "*" + str(row_key) + "\n")
 
 
 def metadata_for_col_index(json_value):
-    with open(META_WAL_PATH + "col.meta", "a") as meta:
+    with open(META_WAL_PATH + COL_META_FILE_NAME, "a") as meta:
         meta.write(json.dumps(json_value) + "\n")
 
 
 def metadata_for_max_size(size):
-    f = open(META_WAL_PATH + "memtable_max_size.meta", 'r+')
+    f = open(META_WAL_PATH + MEMTABLE_SIZE_FILE_NAME, 'r+')
     f.truncate()
     f.write(size)
 
 
 def recover_from_max_size_meta():
     try:
-        with open(META_WAL_PATH + "memtable_max_size.meta", 'r') as max_size_meta:
+        with open(META_WAL_PATH + MEMTABLE_SIZE_FILE_NAME, 'r') as max_size_meta:
             line = max_size_meta.readline()
             if len(line) > 0:
                 global tables_max_size
@@ -67,13 +72,13 @@ def recover_from_max_size_meta():
     except IOError:
         if not os.path.exists(META_WAL_PATH):
             os.mkdir(META_WAL_PATH)
-        open(META_WAL_PATH + "memtable_max_size.meta", 'w').close()
+        open(META_WAL_PATH + MEMTABLE_SIZE_FILE_NAME, 'w').close()
 
 
 def recover_from_row_meta():
     # Recover tables_rows
     try:
-        with open(META_WAL_PATH + "row.meta", "r") as row_meta:
+        with open(META_WAL_PATH + ROW_META_FILE_NAME, "r") as row_meta:
             line = row_meta.readline()
             while line:
                 table_name = line.split("*")[0]
@@ -88,13 +93,13 @@ def recover_from_row_meta():
     except IOError:
         if not os.path.exists(META_WAL_PATH):
             os.mkdir(META_WAL_PATH)
-        open(META_WAL_PATH + "row.meta", 'w').close()
+        open(META_WAL_PATH + ROW_META_FILE_NAME, 'w').close()
 
 
 def recover_from_col_meta():
     # Recover table_columns and table info
     try:
-        with open(META_WAL_PATH + "col.meta", "r") as col_meta:
+        with open(META_WAL_PATH + COL_META_FILE_NAME, "r") as col_meta:
             line = col_meta.readline()
             while len(line) > 1:
                 json_value = json.loads(line)
@@ -111,11 +116,11 @@ def recover_from_col_meta():
     except IOError:
         if not os.path.exists(META_WAL_PATH):
             os.mkdir(META_WAL_PATH)
-        open(META_WAL_PATH + "col.meta", 'w').close()
+        open(META_WAL_PATH + COL_META_FILE_NAME, 'w').close()
 
 
 def write_ahead_log(operation, table, content):
-    with open(META_WAL_PATH + "wal.log", "a") as log:
+    with open(META_WAL_PATH + WAL_LOG_FILE_NAME, "a") as log:
         log.write(str(operation) + "*" + table + "*" + json.dumps(content) + "\n")
 
 
@@ -136,7 +141,7 @@ def spill_to_the_disk():
         # clean memtables
         clean_memtables()
         # clean wal_log
-        f = open(META_WAL_PATH + "wal.log", 'r+')
+        f = open(META_WAL_PATH + WAL_LOG_FILE_NAME, 'r+')
         f.truncate()
 
 
@@ -181,7 +186,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def recover_from_log(self):
         try:
-            with open(META_WAL_PATH + "wal.log", "r") as log:
+            with open(META_WAL_PATH + WAL_LOG_FILE_NAME, "r") as log:
                 line = log.readline()
                 while line:
                     opertaion = line.split("*")[0]
@@ -201,7 +206,7 @@ class MyHandler(BaseHTTPRequestHandler):
                         spill_to_the_disk()
                     line = log.readline()
         except IOError:
-            open(META_WAL_PATH + "wal.log", 'w').close()
+            open(META_WAL_PATH + WAL_LOG_FILE_NAME, 'w').close()
 
     def insert_cell(self, input, table_name):
         if table_name not in table_list["tables"]:
@@ -251,7 +256,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 self._set_response(400)
 
     def find_in_disk(self, table_name, cell_dic, row_value, col_key):
-        for file in os.listdir("disk/"):
+        for file in os.listdir(DISK_PATH):
             if file == table_name + ".table":
                 SSTables = get_disk_json(table_name)
                 for SSTable in SSTables:
@@ -300,8 +305,6 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def retrieve_range(self, table_name):
         content_length = self.headers['content-length']
-        cell_dic = collections.defaultdict(list)
-        value_dic = {}
         if content_length:
             content_length = int(content_length)
             data = str(self.rfile.read(content_length).decode("utf-8"))
@@ -328,7 +331,7 @@ class MyHandler(BaseHTTPRequestHandler):
                             self._set_response(404)
                             return
             # search disk
-            for file in os.listdir("disk/"):
+            for file in os.listdir(DISK_PATH):
                 if file == table_name + ".table":
                     SSTables = get_disk_json(table_name)
                     for SSTable in SSTables:
@@ -352,7 +355,6 @@ class MyHandler(BaseHTTPRequestHandler):
             return
 
     def do_GET(self):
-        # example: this is how you get path and command
         if self.command == 'GET':
             url = self.path.split('/')[1:]
             if url[0] == 'api' and url[1] == 'tables' and len(url) <= 4:
@@ -388,7 +390,6 @@ class MyHandler(BaseHTTPRequestHandler):
                 self.retrieve_a_row(table_name)
 
     def do_POST(self):
-        # example: reading content from HTTP request
         data = None
         content_length = self.headers['content-length']
 
@@ -433,8 +434,6 @@ class MyHandler(BaseHTTPRequestHandler):
                         self._set_response(400)
 
     def do_DELETE(self):
-        # example: send just a 200
-        # self._set_response(200)
         content_length = self.headers['content-length']
         if content_length:
             content_length = int(content_length)
@@ -457,7 +456,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
                         if table_name in memtables:
                             # if table in memtable
-                            removed_dic = memtables.pop(table_name)
+                            memtables.pop(table_name)
 
                         for file in os.listdir(DISK_PATH):
                             if file == table_name + ".table":
@@ -477,7 +476,7 @@ if __name__ == "__main__":
     print("sample server running...")
 
     try:
-        if not os.path.exists(META_WAL_PATH):
+        if not os.path.exists(DISK_PATH):
             os.mkdir(DISK_PATH)
         recover_from_col_meta()
         recover_from_row_meta()
