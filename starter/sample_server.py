@@ -1,9 +1,7 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import collections
-from collections import OrderedDict
 import os
-from datetime import datetime
 
 # In-memory Memtable
 memtables = {}
@@ -28,6 +26,17 @@ num_row_key = 0
 DISK_PATH = "disk/"
 # Metadata & WAL log location
 META_WAL_PATH = "META_WAL/"
+
+
+def get_disk_json(table_name):
+    list = []
+    with open(DISK_PATH + table_name + ".table", "r") as db:
+        line = db.readline()
+        while line:
+            list.append(json.loads(line))
+            line = db.readline()
+    list.reverse()
+    return list
 
 
 def metadata_for_row_index(table_name, row_key):
@@ -56,6 +65,8 @@ def recover_from_max_size_meta():
                 tables_max_size = new_size
                 spill_to_the_disk()
     except IOError:
+        if not os.path.exists(META_WAL_PATH):
+            os.mkdir(META_WAL_PATH)
         open(META_WAL_PATH + "memtable_max_size.meta", 'w').close()
 
 
@@ -75,6 +86,8 @@ def recover_from_row_meta():
                     tables_rows[table_name].append(row_key)
                 line = row_meta.readline()
     except IOError:
+        if not os.path.exists(META_WAL_PATH):
+            os.mkdir(META_WAL_PATH)
         open(META_WAL_PATH + "row.meta", 'w').close()
 
 
@@ -96,6 +109,8 @@ def recover_from_col_meta():
                     tables_info[table_name] = json_value
                 line = col_meta.readline()
     except IOError:
+        if not os.path.exists(META_WAL_PATH):
+            os.mkdir(META_WAL_PATH)
         open(META_WAL_PATH + "col.meta", 'w').close()
 
 
@@ -104,52 +119,19 @@ def write_ahead_log(operation, table, content):
         log.write(str(operation) + "*" + table + "*" + json.dumps(content) + "\n")
 
 
-
-def check_tables():
-    print("============= Table Rows ===============")
-    print(tables_rows)
-    print("============= Table Columns ===============")
-    print(tables_columns)
-    print("============= Table Info ===============")
-    print(tables_info)
-    print("============= Table list ===============")
-    print(table_list)
-    print("============= Memtables ===============")
-    print(memtables)
-
 def spill_to_the_disk():
     if num_row_key >= tables_max_size:
         for table in memtables:
             try:
-                with open(DISK_PATH + str(table) + ".json", "a") as db:
+                with open(DISK_PATH + str(table) + ".table", "a") as db:
                     SSTable = {}
                     for row_key in memtables[table]:
                         SSTable[row_key] = memtables[table][row_key]
-                    SSTable = dict(sorted(SSTable.items(), key = lambda x: x[0]))
+                    SSTable = dict(sorted(SSTable.items(), key=lambda x: x[0]))
                     db.write(json.dumps(SSTable) + "\n")
-                    # with open(DISK_PATH + table + ".json", "w") as new_db:
-                    #     for row_key in memtables[table]:
-                    #         if str(row_key) in load_table:
-                    #             for column in memtables[table][row_key]:
-                    #                 for data in memtables[table][row_key][column]:
-                    #                     value = memtables[table][row_key][column][data]
-                    #
-                    #                     if column in load_table[str(row_key)]:
-                    #                         for data_in_disk in load_table[str(row_key)][column]:
-                    #                             if load_table[str(row_key)][column][data_in_disk] == value:
-                    #                                 del load_table[str(row_key)][column][data_in_disk]
-                    #                     else:
-                    #                         load_table[str(row_key)][column] = {}
-                    #                     load_table[str(row_key)][column][data] = value
-                    #                     if len(load_table[str(row_key)][column]) > 5:
-                    #                         load_table[str(row_key)][column].popitem(last=False)
-                    #         else:
-                    #             load_table[str(row_key)] = memtables[table][row_key]
-                    #     load_table = dict(sorted(load_table.items(), key = lambda x: x[0]))
-                    #     json.dump(load_table, new_db)
             except IOError:
-                with open(DISK_PATH + table + ".json", "w") as db:
-                    sorted_table = dict(sorted(memtables[table].items(), key = lambda x : x[0]))
+                with open(DISK_PATH + table + ".table", "w") as db:
+                    sorted_table = dict(sorted(memtables[table].items(), key=lambda x: x[0]))
                     json.dump(sorted_table, db)
         # clean memtables
         clean_memtables()
@@ -181,6 +163,7 @@ def create_table(input):
             columns = column_family.get("columns")
             tables_columns[table_name][key] = columns
         return True
+
 
 def check_json(input):
     try:
@@ -268,18 +251,15 @@ class MyHandler(BaseHTTPRequestHandler):
                 self._set_response(400)
 
     def find_in_disk(self, table_name, cell_dic, row_value, col_key):
-
         for file in os.listdir("disk/"):
-            if file == table_name + ".json":
-                file_path = os.path.join("disk/", file)
-                with open(file_path, 'r') as rf:
-                    disk_dic = json.loads(rf.read())
-                    if str(row_value) in disk_dic:
-                        if col_key in disk_dic[str(row_value)]:
-                            for time, v in disk_dic[str(row_value)][col_key].items():
+            if file == table_name + ".table":
+                SSTables = get_disk_json(table_name)
+                for SSTable in SSTables:
+                    if str(row_value) in SSTable:
+                        if col_key in SSTable[str(row_value)]:
+                            for time, v in SSTable[str(row_value)][col_key].items():
                                 child_dic = {"value": v, "time": float(time)}
                                 cell_dic["data"].append(child_dic)
-
                             return cell_dic
 
     def retrieve_cell(self, table_name):
@@ -293,15 +273,10 @@ class MyHandler(BaseHTTPRequestHandler):
             cell_dic["row"] = row_value
             col_key = str(data_json.get("column_family")) + ":" + str(data_json.get("column"))
             if table_name not in table_list["tables"] or row_value not in tables_rows[table_name]:
-                check_tables()
-                print(table_name)
-                print(row_value)
-                print("failure in here")
                 self._set_response(400)
                 return
             if data_json.get("column_family") not in tables_columns[table_name] or \
                     data_json.get("column") not in tables_columns[table_name][data_json.get("column_family")]:
-                print("can you find me")
                 self._set_response(400)
                 return
             # must in memtable or disk
@@ -315,14 +290,13 @@ class MyHandler(BaseHTTPRequestHandler):
                 else:
                     # if col_key in memtables[table_name][row_value]:
                     for t, vs in memtables[table_name][row_value][col_key].items():
-                        child_dic = {"value" : vs, "time": float(t)}
+                        child_dic = {"value": vs, "time": float(t)}
                         cell_dic["data"].append(child_dic)
             else:
-                cell_dic = self.find_in_disk(table_name, cell_dic,row_value, col_key)
+                cell_dic = self.find_in_disk(table_name, cell_dic, row_value, col_key)
         data_json = json.dumps(cell_dic)
         self._set_response(200)
         self.wfile.write(data_json.encode("utf8"))
-
 
     def retrieve_range(self, table_name):
         content_length = self.headers['content-length']
@@ -343,7 +317,6 @@ class MyHandler(BaseHTTPRequestHandler):
                 for row_name, value in memtables[table_name].items():
                     if lower_row <= row_name <= upper_row:
                         if col_key in memtables[table_name][row_name]:
-                            # value_dic = {}
                             data_dic = collections.defaultdict()
                             data_dic["row"] = row_name
                             data_dic["data"] = []
@@ -356,19 +329,16 @@ class MyHandler(BaseHTTPRequestHandler):
                             return
             # search disk
             for file in os.listdir("disk/"):
-                if file == table_name + ".json":
-                    file_path = os.path.join("disk/", file)
-                    with open(file_path, 'r') as rf:
-                        disk_dic = json.loads(rf.read())
-
-                        for single_row, _ in disk_dic.items():
-
+                if file == table_name + ".table":
+                    SSTables = get_disk_json(table_name)
+                    for SSTable in SSTables:
+                        for single_row, _ in SSTable.items():
                             if lower_row <= single_row <= upper_row:
-                                if col_key in disk_dic[single_row]:
+                                if col_key in SSTable[single_row]:
                                     dic_range = collections.defaultdict()
                                     dic_range["row"] = single_row
                                     dic_range["data"] = []
-                                    for ti, va in disk_dic[single_row][col_key].items():
+                                    for ti, va in SSTable[single_row][col_key].items():
                                         child_dic = {"value": va, "time": float(ti)}
                                         dic_range["data"].append(child_dic)
                                     cells_dic["rows"].append(dic_range)
@@ -462,8 +432,6 @@ class MyHandler(BaseHTTPRequestHandler):
                     except:
                         self._set_response(400)
 
-            # check_tables()
-
     def do_DELETE(self):
         # example: send just a 200
         # self._set_response(200)
@@ -491,9 +459,9 @@ class MyHandler(BaseHTTPRequestHandler):
                             # if table in memtable
                             removed_dic = memtables.pop(table_name)
 
-                        for file in os.listdir("disk/"):
-                            if file == table_name + ".json":
-                                file_path = os.path.join("disk/", file)
+                        for file in os.listdir(DISK_PATH):
+                            if file == table_name + ".table":
+                                file_path = os.path.join(DISK_PATH, file)
                                 os.remove(file_path)
 
                         write_ahead_log(4, table_name, "")
@@ -509,14 +477,13 @@ if __name__ == "__main__":
     print("sample server running...")
 
     try:
+        if not os.path.exists(META_WAL_PATH):
+            os.mkdir(DISK_PATH)
         recover_from_col_meta()
         recover_from_row_meta()
         handler_class.recover_from_log(handler_class)
         recover_from_max_size_meta()
-        check_tables()
         httpd.serve_forever()
     except KeyboardInterrupt:
         pass
     httpd.server_close()
-
-
