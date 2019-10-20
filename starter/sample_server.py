@@ -202,6 +202,7 @@ def create_table(input):
 
 def insert_cell(input, table_name):
     if table_name not in table_list["tables"]:
+        print("ccccccccccccccccccccc")
         return False
     else:
         dict = json.loads(input)
@@ -262,10 +263,19 @@ class MyHandler(BaseHTTPRequestHandler):
             row_value = data_json.get("row")
             cell_dic["row"] = row_value
             col_key = str(data_json.get("column_family")) + ":" + str(data_json.get("column"))
-            if row_value in memtables[table_name]:
-                if col_key in memtables[table_name][row_value]:
-                    value_dic["values"] = next(reversed(memtables.get(table_name).get(row_value).get(col_key).values()))
-                    value_dic["time"] = next(reversed(memtables.get(table_name).get(row_value).get(col_key)))
+            if table_name not in table_list:
+                print("hello are you ok I am here")
+                self._set_response(404)
+                return
+            if table_name in memtables:
+                if row_value in memtables[table_name]:
+                    cell_dic["data"] = []
+                    if col_key in memtables[table_name][row_value]:
+                        for t, vs in memtables[table_name][row_value][col_key].items():
+                            child_dic = {"value" : vs, "time": t}
+                            cell_dic["data"].append(child_dic)
+                        # value_dic["value"] = next(reversed(memtables.get(table_name).get(row_value).get(col_key).values()))
+                        # value_dic["time"] = next(reversed(memtables.get(table_name).get(row_value).get(col_key)))
             # Come to disk to find
             else:
                 for file in os.listdir("disk/"):
@@ -274,24 +284,28 @@ class MyHandler(BaseHTTPRequestHandler):
                         with open(file_path, 'r') as rf:
                             disk_dic = json.loads(rf.read())
                             # print(disk_dic)
+                            cell_dic["data"] = []
                             if row_value in disk_dic:
                                 if col_key in disk_dic[row_value]:
-                                    entry = disk_dic.get(row_value).get(col_key)
-                                    (key, value), = entry.items()
-                                    value_dic["values"] = value
-                                    value_dic["times"] = key
+                                    # entry = disk_dic.get(row_value).get(col_key)
+                                    # key, value = entry.items()
+                                    for time, v in disk_dic[row_value][col_key].items():
+                                        child_dic = {"value":v, "time":time}
+                                        cell_dic["data"].append(child_dic)
+                                        # value_dic["value"] = disk_dic.get(row_value).get(col_key).
+                                        # value_dic["time"] =
                                 else:
+                                    print("retre1")
                                     self._set_response(400)
                                     return
                             else:
                                 # bad request
+                                print("retrei2")
                                 self._set_response(400)
                                 return
-                    else:
-                        self._set_response(404)
-                        return
+
                 # 400 bad request column family not in disk and memtable
-            cell_dic["data"].append(value_dic)
+            # cell_dic["data"].append(value_dic)
             data_json = json.dumps(cell_dic)
             self._set_response(200)
             self.wfile.write(data_json.encode("utf8"))
@@ -311,25 +325,25 @@ class MyHandler(BaseHTTPRequestHandler):
             # search memtable and all rows exist
             cells_dic = {}
             cells_dic["rows"] = []
-            if upper_row in memtables[table_name] and lower_row in memtables[table_name]:
-                for row_name, value in memtables[table_name].items():
-                    if lower_row <= row_name <= upper_row:
-                        if col_key in memtables[table_name][row_name]:
-                            # value_dic = {}
-                            data_dic = collections.defaultdict()
-                            data_dic["row"] = row_name
-                            data_dic["data"] = []
-                            for time, v in memtables[table_name][row_name][col_key].items():
-                                child_dic = {"value": v, "time": time}
-                                data_dic["data"].append(child_dic)
-                                print(data_dic)
-                            cells_dic["rows"].append(data_dic)
-                        else:
-                            self._set_response(404)
-                            return
-            else:
-                self._set_response(404)
-                return
+            # if upper_row in memtables[table_name] and lower_row in memtables[table_name]:
+            for row_name, value in memtables[table_name].items():
+                if lower_row <= row_name <= upper_row:
+                    if col_key in memtables[table_name][row_name]:
+                        # value_dic = {}
+                        data_dic = collections.defaultdict()
+                        data_dic["row"] = row_name
+                        data_dic["data"] = []
+                        for time, v in memtables[table_name][row_name][col_key].items():
+                            child_dic = {"value": v, "time": time}
+                            data_dic["data"].append(child_dic)
+                            print(data_dic)
+                        cells_dic["rows"].append(data_dic)
+                    else:
+                        self._set_response(404)
+                        return
+            # else:
+            #     self._set_response(404)
+            #     return
             print(cells_dic)
             data_json = json.dumps(cells_dic)
             self._set_response(200)
@@ -378,15 +392,16 @@ class MyHandler(BaseHTTPRequestHandler):
         if content_length != None:
             content_length = int(content_length)
             data = str(self.rfile.read(content_length).decode("utf-8"))
-            if not check_json(data):
-                self._set_response(400)
-                return
-
             request_path = self.path
             if len(request_path.split("/")) >= 3:
                 path_1 = request_path.split("/")[2]
                 # Create a table
                 if path_1 == 'tables' and len(request_path.split("/")) == 3:
+                    if not check_json(data):
+                        print(data)
+                        print("not json")
+                        self._set_response(400)
+                        return
                     flag = create_table(json.loads(data))
                     if not flag:
                         self._set_response(409)
@@ -395,17 +410,28 @@ class MyHandler(BaseHTTPRequestHandler):
                         self._set_response(200)
 
                 # Insert a cell
-                elif path_1 == 'tables' and len(request_path.split("/")) > 3:
+                elif path_1 == 'table' and len(request_path.split("/")) > 3:
                     table_name = request_path.split("/")[3]
                     if insert_cell(data, table_name):
+                        if not check_json(data):
+                            print(data)
+                            print("not json")
+                            self._set_response(400)
+                            return
                         spill_to_the_disk()
                         write_ahead_log(2, table_name, json.loads(data))
                         self._set_response(200)
                     else:
-                        self._set_response(409)
+                        self._set_response(404)
+                        return
 
                 # Reset memtable size
                 elif path_1 == 'memtable':
+                    if not check_json(data):
+                        print(data)
+                        print("not json")
+                        self._set_response(400)
+                        return
                     json_value = json.loads(data)
                     try:
                         global tables_max_size
@@ -437,25 +463,23 @@ class MyHandler(BaseHTTPRequestHandler):
                         # table not exist in table list
                         self._set_response(404)
                         return
-                    elif table_name in memtables:
-                        # if table in memtable
-                        removed_dic = memtables.pop(table_name)
-                        # delete table_columns
-                        # remove table from table lists
+                    else:
                         table_list["tables"].remove(table_name)
+                        del tables_info[table_name]
                         if table_name in tables_columns:
                             del tables_columns[table_name]
                         if table_name in tables_rows:
                             del tables_rows[table_name]
-                        write_ahead_log(4, table_name, "")
-                        self._set_response(200)
-                    else:
-                        # table in disk
-                        table_list["tables"].remove(table_name)
+
+                        if table_name in memtables:
+                            # if table in memtable
+                            removed_dic = memtables.pop(table_name)
+
                         for file in os.listdir("disk/"):
                             if file == table_name + ".json":
                                 file_path = os.path.join("disk/", file)
                                 os.remove(file_path)
+
                         write_ahead_log(4, table_name, "")
                         self._set_response(200)
 
