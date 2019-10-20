@@ -83,7 +83,7 @@ def recover_from_col_meta():
     try:
         with open(META_WAL_PATH + "col.meta", "r") as col_meta:
             line = col_meta.readline()
-            while line:
+            while len(line) > 1:
                 json_value = json.loads(line)
                 table_name = json_value.get("name")
                 if table_name not in tables_columns:
@@ -121,28 +121,32 @@ def spill_to_the_disk():
     if num_row_key >= tables_max_size:
         for table in memtables:
             try:
-                with open(DISK_PATH + str(table) + ".json", "r") as db:
-                    load_table = json.load(db)
-                    with open(DISK_PATH + table + ".json", "w") as new_db:
-                        for row_key in memtables[table]:
-                            if str(row_key) in load_table:
-                                for column in memtables[table][row_key]:
-                                    for data in memtables[table][row_key][column]:
-                                        value = memtables[table][row_key][column][data]
-
-                                        if column in load_table[str(row_key)]:
-                                            for data_in_disk in load_table[str(row_key)][column]:
-                                                if load_table[str(row_key)][column][data_in_disk] == value:
-                                                    del load_table[str(row_key)][column][data_in_disk]
-                                        else:
-                                            load_table[str(row_key)][column] = {}
-                                        load_table[str(row_key)][column][data] = value
-                                        if len(load_table[str(row_key)][column]) > 5:
-                                            load_table[str(row_key)][column].popitem(last=False)
-                            else:
-                                load_table[str(row_key)] = memtables[table][row_key]
-                        load_table = dict(sorted(load_table.items(), key = lambda x: x[0]))
-                        json.dump(load_table, new_db)
+                with open(DISK_PATH + str(table) + ".json", "a") as db:
+                    SSTable = {}
+                    for row_key in memtables[table]:
+                        SSTable[row_key] = memtables[table][row_key]
+                    SSTable = dict(sorted(SSTable.items(), key = lambda x: x[0]))
+                    db.write(json.dumps(SSTable) + "\n")
+                    # with open(DISK_PATH + table + ".json", "w") as new_db:
+                    #     for row_key in memtables[table]:
+                    #         if str(row_key) in load_table:
+                    #             for column in memtables[table][row_key]:
+                    #                 for data in memtables[table][row_key][column]:
+                    #                     value = memtables[table][row_key][column][data]
+                    #
+                    #                     if column in load_table[str(row_key)]:
+                    #                         for data_in_disk in load_table[str(row_key)][column]:
+                    #                             if load_table[str(row_key)][column][data_in_disk] == value:
+                    #                                 del load_table[str(row_key)][column][data_in_disk]
+                    #                     else:
+                    #                         load_table[str(row_key)][column] = {}
+                    #                     load_table[str(row_key)][column][data] = value
+                    #                     if len(load_table[str(row_key)][column]) > 5:
+                    #                         load_table[str(row_key)][column].popitem(last=False)
+                    #         else:
+                    #             load_table[str(row_key)] = memtables[table][row_key]
+                    #     load_table = dict(sorted(load_table.items(), key = lambda x: x[0]))
+                    #     json.dump(load_table, new_db)
             except IOError:
                 with open(DISK_PATH + table + ".json", "w") as db:
                     sorted_table = dict(sorted(memtables[table].items(), key = lambda x : x[0]))
@@ -263,11 +267,24 @@ class MyHandler(BaseHTTPRequestHandler):
             else:
                 self._set_response(400)
 
+    def find_in_disk(self, table_name, cell_dic, row_value, col_key):
+
+        for file in os.listdir("disk/"):
+            if file == table_name + ".json":
+                file_path = os.path.join("disk/", file)
+                with open(file_path, 'r') as rf:
+                    disk_dic = json.loads(rf.read())
+                    if str(row_value) in disk_dic:
+                        if col_key in disk_dic[str(row_value)]:
+                            for time, v in disk_dic[str(row_value)][col_key].items():
+                                child_dic = {"value": v, "time": float(time)}
+                                cell_dic["data"].append(child_dic)
+
+                            return cell_dic
+
     def retrieve_cell(self, table_name):
-        data = None
         content_length = self.headers['content-length']
         cell_dic = collections.defaultdict(list)
-        value_dic = {}
         if content_length:
             content_length = int(content_length)
             data = str(self.rfile.read(content_length).decode("utf-8"))
@@ -275,95 +292,37 @@ class MyHandler(BaseHTTPRequestHandler):
             row_value = data_json.get("row")
             cell_dic["row"] = row_value
             col_key = str(data_json.get("column_family")) + ":" + str(data_json.get("column"))
-
-            if data_json.get("column_family") not in tables_columns[table_name] or data_json.get("column") not in tables_columns[table_name][data_json.get("column_family")]:
+            if table_name not in table_list["tables"] or row_value not in tables_rows[table_name]:
+                check_tables()
+                print(table_name)
+                print(row_value)
+                print("failure in here")
                 self._set_response(400)
                 return
+            if data_json.get("column_family") not in tables_columns[table_name] or \
+                    data_json.get("column") not in tables_columns[table_name][data_json.get("column_family")]:
+                print("can you find me")
+                self._set_response(400)
+                return
+            # must in memtable or disk
+            # search in memtables
+            cell_dic["data"] = []
             if table_name in memtables:
-                if row_value in memtables[table_name]:
-                    cell_dic["data"] = []
-                    if col_key in memtables[table_name][row_value]:
-                        for t, vs in memtables[table_name][row_value][col_key].items():
-                            child_dic = {"value" : vs, "time": float(t)}
-                            cell_dic["data"].append(child_dic)
-                    # 去disk找（记得精简一下！
-                    else:
-                        for file in os.listdir("disk/"):
-                            if file == table_name + ".json":
-                                file_path = os.path.join("disk/", file)
-                                with open(file_path, 'r') as rf:
-                                    disk_dic = json.loads(rf.read())
-                                    cell_dic["data"] = []
-                                    if str(row_value) in disk_dic:
-                                        if col_key in disk_dic[str(row_value)]:
-                                            for time, v in disk_dic[str(row_value)][col_key].items():
-                                                child_dic = {"value": v, "time": float(time)}
-                                                cell_dic["data"].append(child_dic)
-                                                data_json = json.dumps(cell_dic)
-                                                self._set_response(200)
-                                                self.wfile.write(data_json.encode("utf8"))
-                                                return
-                                        else:
-                                            self._set_response(400)
-                                            return
-                                    else:
-                                        # bad request
-                                        self._set_response(400)
-                                        return
-                # 去disk找（记得精简一下！
+                # not in memtable, to disk
+                if row_value not in memtables[table_name] or col_key not in memtables[table_name][row_value]:
+                    cell_dic = self.find_in_disk(table_name, cell_dic, row_value, col_key)
+                # go to memtable
                 else:
-                    for file in os.listdir("disk/"):
-                        if file == table_name + ".json":
-                            file_path = os.path.join("disk/", file)
-                            with open(file_path, 'r') as rf:
-                                disk_dic = json.loads(rf.read())
-                                cell_dic["data"] = []
-                                if str(row_value) in disk_dic:
-                                    if col_key in disk_dic[str(row_value)]:
-                                        for time, v in disk_dic[str(row_value)][col_key].items():
-                                            child_dic = {"value": v, "time": float(time)}
-                                            cell_dic["data"].append(child_dic)
-                                            data_json = json.dumps(cell_dic)
-                                            self._set_response(200)
-                                            self.wfile.write(data_json.encode("utf8"))
-                                            return
-                                    else:
-
-                                        self._set_response(400)
-                                        return
-                                else:
-                                    # bad request
-                                    self._set_response(400)
-                                    return
-            # Come to disk to find
-            # 去disk找（记得精简一下！
+                    # if col_key in memtables[table_name][row_value]:
+                    for t, vs in memtables[table_name][row_value][col_key].items():
+                        child_dic = {"value" : vs, "time": float(t)}
+                        cell_dic["data"].append(child_dic)
             else:
-                for file in os.listdir("disk/"):
-                    if file == table_name + ".json":
-                        file_path = os.path.join("disk/", file)
-                        with open(file_path, 'r') as rf:
-                            disk_dic = json.loads(rf.read())
-                            cell_dic["data"] = []
-                            if str(row_value) in disk_dic:
-                                if col_key in disk_dic[str(row_value)]:
-                                    for time, v in disk_dic[str(row_value)][col_key].items():
-                                        child_dic = {"value":v, "time":float(time)}
-                                        cell_dic["data"].append(child_dic)
-                                        data_json = json.dumps(cell_dic)
-                                        self._set_response(200)
-                                        self.wfile.write(data_json.encode("utf8"))
-                                        return
-                                else:
-                                    self._set_response(400)
-                                    return
-                            else:
-                                # bad request
-                                self._set_response(400)
-                                return
-            data_json = json.dumps(cell_dic)
-            self._set_response(200)
-            self.wfile.write(data_json.encode("utf8"))
-            return
+                cell_dic = self.find_in_disk(table_name, cell_dic,row_value, col_key)
+        data_json = json.dumps(cell_dic)
+        self._set_response(200)
+        self.wfile.write(data_json.encode("utf8"))
+
 
     def retrieve_range(self, table_name):
         content_length = self.headers['content-length']

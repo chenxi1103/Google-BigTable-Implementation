@@ -62,10 +62,10 @@ def run_testcase(testcase, hostname, port):
     print("Running Test Case: " + testcase)
 
     if testcase == "Tablet":
-        TabletTests.HOSTNAME = hostname
-        TabletTests.PORT = port
+        TableTests.HOSTNAME = hostname
+        TableTests.PORT = port
         runner = unittest.TextTestRunner()
-        runner.run(TabletTests.suite())
+        runner.run(TableTests.suite())
     elif testcase == "Op":
         OpTests.HOSTNAME = hostname
         OpTests.PORT = port
