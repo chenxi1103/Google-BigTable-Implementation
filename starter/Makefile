@@ -1,8 +1,8 @@
 include hosts.mk
 
 # EDIT THIS
-MASTER_CMD=python3 sample_server.py
-TABLET_CMD=python3 sample_server.py
+MASTER_CMD=python3 tablet_server.py
+TABLET_CMD=python3 tablet_server.py
 # END EDIT REGION
 
 # if you require any compilation, fill in this section
@@ -10,7 +10,7 @@ compile:
 	echo "no compile"
 
 grade1:
-	python3 grading/grading.py 1 $(TABLET_HOSTNAME) $(TABLET_PORT)
+	cd grading/ && python3 grading.py 1 $(TABLET_HOSTNAME) $(TABLET_PORT)
 
 grade2:
 	python3 grading/grading.py 2 $(MASTER_HOSTNAME) $(MASTER_PORT)
@@ -18,8 +18,8 @@ grade2:
 master:
 	$(MASTER_CMD) $(MASTER_HOSTNAME) $(MASTER_PORT)
 
-tablet1:
-	$(TABLET_CMD) $(TABLET1_HOSTNAME) $(TABLET1_PORT) $(MASTER_HOSTNAME) $(MASTER_PORT)  $(WAL) $(SSTABLE_FOLDER)
+tablet:
+	$(TABLET_CMD) $(TABLET_HOSTNAME) $(TABLET_PORT) $(MASTER_HOSTNAME) $(MASTER_PORT)  $(WAL) $(SSTABLE_FOLDER)
 
 tablet2:
 	$(TABLET_CMD) $(TABLET2_HOSTNAME) $(TABLET2_PORT) $(MASTER_HOSTNAME) $(MASTER_PORT)  $(WAL) $(SSTABLE_FOLDER)
