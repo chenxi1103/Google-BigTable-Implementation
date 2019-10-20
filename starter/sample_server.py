@@ -32,7 +32,7 @@ META_WAL_PATH = "META_WAL/"
 
 def metadata_for_row_index(table_name, row_key):
     with open(META_WAL_PATH + "row.meta", "a") as meta:
-        meta.write(table_name + "*" + row_key + "\n")
+        meta.write(str(table_name) + "*" + str(row_key) + "\n")
 
 
 def metadata_for_col_index(json_value):
@@ -204,49 +204,6 @@ def create_table(input):
             tables_columns[table_name][key] = columns
         return True
 
-
-def insert_cell(input, table_name):
-    if table_name not in table_list["tables"]:
-        return False
-    else:
-        dict = json.loads(input)
-        column_family = dict.get("column_family")
-        column = dict.get("column")
-        row = dict.get("row")
-        data = dict.get("data")
-        print(column_family, column, row, data)
-        if column_family in tables_columns[table_name]:
-            if column in tables_columns[table_name][column_family]:
-                if table_name not in memtables:
-                    memtables[table_name] = {}
-                if row not in memtables[table_name]:
-                    memtables[table_name][row] = {}
-                    global num_row_key
-                    num_row_key += 1
-                col_index = column_family + ":" + column
-                if col_index not in memtables[table_name][row]:
-                    memtables[table_name][row][col_index] = collections.OrderedDict()
-                    memtables[table_name][row][col_index][data[0]["time"]] = data[0]["value"]
-                else:
-
-                    for Time in memtables[table_name][row][col_index]:
-                        print("time slottttttt")
-                        print(memtables[table_name][row][col_index][Time])
-                        if memtables[table_name][row][col_index][Time] == data[0]["value"]:
-                            del memtables[table_name][row][col_index][Time]
-                    memtables[table_name][row][col_index][data[0]["time"]] = data[0]["value"]
-                    if len(memtables[table_name][row][col_index]) > 5:
-                        memtables[table_name][row][col_index].popitem(last=False)
-                    print(memtables[table_name][row][col_index])
-
-                # put new row into row in-memory index
-                if row not in tables_rows[table_name]:
-                    tables_rows[table_name].append(row)
-                    # If this is a new row key, write it in metadata
-                    metadata_for_row_index(table_name, row)
-                return True
-
-
 def check_json(input):
     try:
         json.loads(input)
@@ -261,6 +218,58 @@ class MyHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'application/json')
         self.end_headers()
 
+    def insert_cell(self, input, table_name):
+        if table_name not in table_list["tables"]:
+            self._set_response(404)
+            return
+        else:
+            if not check_json(input):
+                self._set_response(400)
+                return
+            dict = json.loads(input)
+            column_family = dict.get("column_family")
+            column = dict.get("column")
+            row = dict.get("row")
+            data = dict.get("data")
+            print(column_family, column, row, data)
+            col_index = column_family + ":" + column
+            if column_family in tables_columns[table_name] and column in tables_columns[table_name][column_family]:
+                if column_family in tables_columns[table_name]:
+                    if column in tables_columns[table_name][column_family]:
+                        if table_name not in memtables:
+                            memtables[table_name] = {}
+                        if row not in memtables[table_name]:
+                            memtables[table_name][row] = {}
+                            global num_row_key
+                            num_row_key += 1
+                        if col_index not in memtables[table_name][row]:
+                            memtables[table_name][row][col_index] = collections.OrderedDict()
+                            memtables[table_name][row][col_index][data[0]["time"]] = data[0]["value"]
+                        else:
+
+                            for Time in memtables[table_name][row][col_index]:
+                                print("time slottttttt")
+                                print(memtables[table_name][row][col_index][Time])
+                                if memtables[table_name][row][col_index][Time] == data[0]["value"]:
+                                    del memtables[table_name][row][col_index][Time]
+                            memtables[table_name][row][col_index][data[0]["time"]] = data[0]["value"]
+                            if len(memtables[table_name][row][col_index]) > 5:
+                                memtables[table_name][row][col_index].popitem(last=False)
+                            print(memtables[table_name][row][col_index])
+
+                        # put new row into row in-memory index
+                        if row not in tables_rows[table_name]:
+                            tables_rows[table_name].append(row)
+                            # If this is a new row key, write it in metadata
+                            metadata_for_row_index(table_name, row)
+
+                        spill_to_the_disk()
+                        write_ahead_log(2, table_name, dict)
+                        self._set_response(200)
+                        return
+            else:
+                self._set_response(400)
+
     def retrieve_cell(self, table_name):
         data = None
         content_length = self.headers['content-length']
@@ -274,8 +283,8 @@ class MyHandler(BaseHTTPRequestHandler):
             row_value = data_json.get("row")
             cell_dic["row"] = row_value
             col_key = str(data_json.get("column_family")) + ":" + str(data_json.get("column"))
-            if table_name not in table_list['tables']:
-                self._set_response(404)
+            if data_json.get("column_family") not in tables_columns[table_name] or data_json.get("column") not in tables_columns[table_name][data_json.get("column_family")]:
+                self._set_response(400)
                 return
             if table_name in memtables:
                 if row_value in memtables[table_name]:
@@ -284,6 +293,9 @@ class MyHandler(BaseHTTPRequestHandler):
                         for t, vs in memtables[table_name][row_value][col_key].items():
                             child_dic = {"value" : vs, "time": float(t)}
                             cell_dic["data"].append(child_dic)
+                    else:
+                        self._set_response(400)
+                        return
                         # value_dic["value"] = next(reversed(memtables.get(table_name).get(row_value).get(col_key).values()))
                         # value_dic["time"] = next(reversed(memtables.get(table_name).get(row_value).get(col_key)))
             # Come to disk to find
@@ -358,13 +370,18 @@ class MyHandler(BaseHTTPRequestHandler):
                     file_path = os.path.join("disk/", file)
                     with open(file_path, 'r') as rf:
                         disk_dic = json.loads(rf.read())
-                        cell_dic["data"] = []
+
                         for single_row, _ in disk_dic.items():
+
                             if lower_row <= single_row <= upper_row:
                                 if col_key in disk_dic[single_row]:
+                                    dic_range = collections.defaultdict()
+                                    dic_range["row"] = single_row
+                                    dic_range["data"] = []
                                     for ti, va in disk_dic[single_row][col_key].items():
-                                        child_dic = {"value" : va, "time" : float(ti)}
-                                        cell_dic["data"].append(child_dic)
+                                        child_dic = {"value": va, "time": float(ti)}
+                                        dic_range["data"].append(child_dic)
+                                    cells_dic["rows"].append(dic_range)
                                 else:
                                     self._set_response(404)
                                     return
@@ -394,11 +411,14 @@ class MyHandler(BaseHTTPRequestHandler):
                         data_json = json.dumps(data)
                         self._set_response(200)
                         self.wfile.write(data_json.encode("utf8"))
-                else:
-                    self._set_response(404)
+                    else:
+                        self._set_response(404)
             elif url[0] == 'api' and url[1] == 'table' and url[-1] == 'cell':
                 # Retrieve a cell
                 table_name = url[2]
+                if table_name not in table_list["tables"]:
+                    self._set_response(404)
+                    return
                 # print(table_name)
                 self.retrieve_cell(table_name)
             elif url[0] == 'api' and url[1] == 'table' and url[-1] == 'cells':
@@ -437,18 +457,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 # Insert a cell
                 elif path_1 == 'table' and len(request_path.split("/")) > 3:
                     table_name = request_path.split("/")[3]
-                    if insert_cell(data, table_name):
-                        if not check_json(data):
-                            print(data)
-                            print("not json")
-                            self._set_response(400)
-                            return
-                        spill_to_the_disk()
-                        write_ahead_log(2, table_name, json.loads(data))
-                        self._set_response(200)
-                    else:
-                        self._set_response(404)
-                        return
+                    self.insert_cell(data, table_name)
 
                 # Reset memtable size
                 elif path_1 == 'memtable':
