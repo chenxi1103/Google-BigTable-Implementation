@@ -20,17 +20,19 @@ global tables_max_size
 tables_max_size = 100
 
 # In-memory number of row key
-global num_row_key
-num_row_key = 0
+# global num_row_key
+num_row_keys = {}
 
 # In-disk database location
 DISK_PATH = "disk/"
 # Metadata & WAL log location
-META_WAL_PATH = "META_WAL/"
+META_PATH = "META/"
+WAL_PATH = "WAL/"
+
 
 ROW_META_FILE_NAME = "row.meta"
 COL_META_FILE_NAME = "col.meta"
-WAL_LOG_FILE_NAME = "wal.log"
+WAL_LOG_FILE_NAME = ".log"
 MEMTABLE_SIZE_FILE_NAME = "memtable_max_size.meta"
 
 
@@ -46,24 +48,24 @@ def get_disk_json(table_name):
 
 
 def metadata_for_row_index(table_name, row_key):
-    with open(META_WAL_PATH + ROW_META_FILE_NAME, "a") as meta:
+    with open(META_PATH + ROW_META_FILE_NAME, "a") as meta:
         meta.write(str(table_name) + "*" + str(row_key) + "\n")
 
 
 def metadata_for_col_index(json_value):
-    with open(META_WAL_PATH + COL_META_FILE_NAME, "a") as meta:
+    with open(META_PATH + COL_META_FILE_NAME, "a") as meta:
         meta.write(json.dumps(json_value) + "\n")
 
 
 def metadata_for_max_size(size):
-    f = open(META_WAL_PATH + MEMTABLE_SIZE_FILE_NAME, 'r+')
+    f = open(META_PATH + MEMTABLE_SIZE_FILE_NAME, 'r+')
     f.truncate()
     f.write(size)
 
 
 def recover_from_max_size_meta():
     try:
-        with open(META_WAL_PATH + MEMTABLE_SIZE_FILE_NAME, 'r') as max_size_meta:
+        with open(META_PATH + MEMTABLE_SIZE_FILE_NAME, 'r') as max_size_meta:
             line = max_size_meta.readline()
             if len(line) > 0:
                 global tables_max_size
@@ -71,15 +73,15 @@ def recover_from_max_size_meta():
                 tables_max_size = new_size
                 spill_to_the_disk()
     except IOError:
-        if not os.path.exists(META_WAL_PATH):
-            os.mkdir(META_WAL_PATH)
-        open(META_WAL_PATH + MEMTABLE_SIZE_FILE_NAME, 'w').close()
+        if not os.path.exists(META_PATH):
+            os.mkdir(META_PATH)
+        open(META_PATH + MEMTABLE_SIZE_FILE_NAME, 'w').close()
 
 
 def recover_from_row_meta():
     # Recover tables_rows
     try:
-        with open(META_WAL_PATH + ROW_META_FILE_NAME, "r") as row_meta:
+        with open(META_PATH + ROW_META_FILE_NAME, "r") as row_meta:
             line = row_meta.readline()
             while line:
                 table_name = line.split("*")[0]
@@ -92,15 +94,15 @@ def recover_from_row_meta():
                     tables_rows[table_name].append(row_key)
                 line = row_meta.readline()
     except IOError:
-        if not os.path.exists(META_WAL_PATH):
-            os.mkdir(META_WAL_PATH)
-        open(META_WAL_PATH + ROW_META_FILE_NAME, 'w').close()
+        if not os.path.exists(META_PATH):
+            os.mkdir(META_PATH)
+        open(META_PATH + ROW_META_FILE_NAME, 'w').close()
 
 
 def recover_from_col_meta():
     # Recover table_columns and table info
     try:
-        with open(META_WAL_PATH + COL_META_FILE_NAME, "r") as col_meta:
+        with open(META_PATH + COL_META_FILE_NAME, "r") as col_meta:
             line = col_meta.readline()
             while len(line) > 1:
                 json_value = json.loads(line)
@@ -115,41 +117,42 @@ def recover_from_col_meta():
                     tables_info[table_name] = json_value
                 line = col_meta.readline()
     except IOError:
-        if not os.path.exists(META_WAL_PATH):
-            os.mkdir(META_WAL_PATH)
-        open(META_WAL_PATH + COL_META_FILE_NAME, 'w').close()
+        if not os.path.exists(META_PATH):
+            os.mkdir(META_PATH)
+        open(META_PATH + COL_META_FILE_NAME, 'w').close()
 
 
 def write_ahead_log(operation, table, content):
-    with open(META_WAL_PATH + WAL_LOG_FILE_NAME, "a") as log:
-        log.write(str(operation) + "*" + table + "*" + json.dumps(content) + "\n")
+    try:
+        with open(WAL_PATH + table + WAL_LOG_FILE_NAME, "a") as log:
+            log.write(str(operation) + "*" + table + "*" + json.dumps(content) + "\n")
+    except IOError:
+        with open(WAL_PATH + table + WAL_LOG_FILE_NAME, "w") as log:
+            log.write(str(operation) + "*" + table + "*" + json.dumps(content) + "\n")
 
 
 def spill_to_the_disk():
-    if num_row_key >= tables_max_size:
-        for table in memtables:
+    for table in num_row_keys:
+        if num_row_keys[table] >= tables_max_size:
             try:
-                with open(DISK_PATH + str(table) + ".table", "a") as db:
+                with open(DISK_PATH + table + ".table", "a") as db:
                     SSTable = {}
                     for row_key in memtables[table]:
                         SSTable[row_key] = memtables[table][row_key]
                     SSTable = dict(sorted(SSTable.items(), key=lambda x: x[0]))
                     db.write(json.dumps(SSTable) + "\n")
+                    clean_memtables(table)
+                    os.remove(WAL_PATH + table + WAL_LOG_FILE_NAME)
+
             except IOError:
                 with open(DISK_PATH + table + ".table", "w") as db:
                     sorted_table = dict(sorted(memtables[table].items(), key=lambda x: x[0]))
                     json.dump(sorted_table, db)
-        # clean memtables
-        clean_memtables()
-        # clean wal_log
-        f = open(META_WAL_PATH + WAL_LOG_FILE_NAME, 'r+')
-        f.truncate()
 
 
-def clean_memtables():
-    memtables.clear()
-    global num_row_key
-    num_row_key = 0
+def clean_memtables(table_name):
+    del memtables[table_name]
+    num_row_keys[table_name] = 0
 
 
 def create_table(input):
@@ -163,6 +166,10 @@ def create_table(input):
         tables_info[table_name] = input
         tables_columns[table_name] = {}
         tables_rows[table_name] = []
+
+        # For num_row_key
+        num_row_keys[table_name] = 0
+
         # put new column families and columns into column in-memory index
         for column_family in input.get("column_families"):
             key = column_family.get("column_family_key")
@@ -187,27 +194,31 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def recover_from_log(self):
         try:
-            with open(META_WAL_PATH + WAL_LOG_FILE_NAME, "r") as log:
-                line = log.readline()
-                while line:
-                    opertaion = line.split("*")[0]
-                    table_name = line.split("*")[1]
-                    content = json.loads(line.split("*")[2])
-                    # create a table
-                    if opertaion == "1":
-                        create_table(content)
-                    # insert a cell
-                    elif opertaion == "2":
-                        self.insert_cell(line.split("*")[2], table_name)
-                    # reset memtable size
-                    elif opertaion == "3":
-                        global tables_max_size
-                        new_size = int(content.get("memtable_max"))
-                        tables_max_size = new_size
-                        spill_to_the_disk()
-                    line = log.readline()
+            f_list = os.listdir(WAL_PATH)
+            for file in f_list:
+                if os.path.splitext(file)[1] == '.log':
+                    table = os.path.splitext(file)[0]
+                    with open(WAL_PATH + table + WAL_LOG_FILE_NAME, "r") as log:
+                        line = log.readline()
+                        while line:
+                            opertaion = line.split("*")[0]
+                            table_name = line.split("*")[1]
+                            content = json.loads(line.split("*")[2])
+                            # create a table
+                            if opertaion == "1":
+                                create_table(content)
+                            # insert a cell
+                            elif opertaion == "2":
+                                self.insert_cell(line.split("*")[2], table_name)
+                            # reset memtable size
+                            elif opertaion == "3":
+                                global tables_max_size
+                                new_size = int(content.get("memtable_max"))
+                                tables_max_size = new_size
+                                spill_to_the_disk()
+                            line = log.readline()
         except IOError:
-            open(META_WAL_PATH + WAL_LOG_FILE_NAME, 'w').close()
+            os.makedirs(WAL_PATH)
 
     def insert_cell(self, input, table_name):
         if table_name not in table_list["tables"]:
@@ -230,8 +241,7 @@ class MyHandler(BaseHTTPRequestHandler):
                             memtables[table_name] = {}
                         if row not in memtables[table_name]:
                             memtables[table_name][row] = {}
-                            global num_row_key
-                            num_row_key += 1
+                            num_row_keys[table_name] += 1
                         if col_index not in memtables[table_name][row]:
                             memtables[table_name][row][col_index] = collections.OrderedDict()
                             memtables[table_name][row][col_index][data[0]["time"]] = data[0]["value"]
@@ -426,10 +436,14 @@ class MyHandler(BaseHTTPRequestHandler):
                     try:
                         global tables_max_size
                         new_size = int(json_value["memtable_max"])
+                        print("---")
                         tables_max_size = new_size
                         write_ahead_log(3, "default", json_value)
+                        print("----")
                         spill_to_the_disk()
+                        print("-----")
                         metadata_for_max_size(str(new_size))
+                        print("-------")
                         self._set_response(200)
                     except:
                         self._set_response(400)
