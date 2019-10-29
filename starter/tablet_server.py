@@ -30,6 +30,10 @@ DISK_PATH = "disk/"
 META_PATH = "META/"
 WAL_PATH = "WAL/"
 
+# Server Name
+global TABLET_SERVER_NAME
+TABLET_SERVER_NAME = ""
+
 
 ROW_META_FILE_NAME = "row.meta"
 COL_META_FILE_NAME = "col.meta"
@@ -51,7 +55,7 @@ def check_tables():
 
 def get_disk_json(table_name):
     list = []
-    with open(DISK_PATH + table_name + ".table", "r") as db:
+    with open(TABLET_SERVER_NAME + "/" + DISK_PATH + table_name + ".table", "r") as db:
         line = db.readline()
         while line:
             list.append(json.loads(line))
@@ -61,24 +65,24 @@ def get_disk_json(table_name):
 
 
 def metadata_for_row_index(table_name, row_key):
-    with open(META_PATH + ROW_META_FILE_NAME, "a") as meta:
+    with open(TABLET_SERVER_NAME + "/" + META_PATH + ROW_META_FILE_NAME, "a") as meta:
         meta.write(str(table_name) + "*" + str(row_key) + "\n")
 
 
 def metadata_for_col_index(json_value):
-    with open(META_PATH + COL_META_FILE_NAME, "a") as meta:
+    with open(TABLET_SERVER_NAME + "/" + META_PATH + COL_META_FILE_NAME, "a") as meta:
         meta.write(json.dumps(json_value) + "\n")
 
 
 def metadata_for_max_size(size):
-    f = open(META_PATH + MEMTABLE_SIZE_FILE_NAME, 'r+')
+    f = open(TABLET_SERVER_NAME + "/" + META_PATH + MEMTABLE_SIZE_FILE_NAME, 'r+')
     f.truncate()
     f.write(size)
 
 
 def recover_from_max_size_meta():
     try:
-        with open(META_PATH + MEMTABLE_SIZE_FILE_NAME, 'r') as max_size_meta:
+        with open(TABLET_SERVER_NAME + "/" + META_PATH + MEMTABLE_SIZE_FILE_NAME, 'r') as max_size_meta:
             line = max_size_meta.readline()
             if len(line) > 0:
                 global tables_max_size
@@ -86,15 +90,15 @@ def recover_from_max_size_meta():
                 tables_max_size = new_size
                 spill_to_the_disk()
     except IOError:
-        if not os.path.exists(META_PATH):
-            os.mkdir(META_PATH)
-        open(META_PATH + MEMTABLE_SIZE_FILE_NAME, 'w').close()
+        if not os.path.exists(TABLET_SERVER_NAME + "/" + META_PATH):
+            os.mkdir(TABLET_SERVER_NAME + "/" + META_PATH)
+        open(TABLET_SERVER_NAME + "/" + META_PATH + MEMTABLE_SIZE_FILE_NAME, 'w').close()
 
 
 def recover_from_row_meta():
     # Recover tables_rows
     try:
-        with open(META_PATH + ROW_META_FILE_NAME, "r") as row_meta:
+        with open(TABLET_SERVER_NAME + "/" + META_PATH + ROW_META_FILE_NAME, "r") as row_meta:
             line = row_meta.readline()
             while line:
                 table_name = line.split("*")[0]
@@ -107,15 +111,15 @@ def recover_from_row_meta():
                     tables_rows[table_name].append(row_key)
                 line = row_meta.readline()
     except IOError:
-        if not os.path.exists(META_PATH):
-            os.mkdir(META_PATH)
-        open(META_PATH + ROW_META_FILE_NAME, 'w').close()
+        if not os.path.exists(TABLET_SERVER_NAME + "/" + META_PATH):
+            os.mkdir(TABLET_SERVER_NAME + "/" + META_PATH)
+        open(TABLET_SERVER_NAME + "/" + META_PATH + ROW_META_FILE_NAME, 'w').close()
 
 
 def recover_from_col_meta():
     # Recover table_columns and table info
     try:
-        with open(META_PATH + COL_META_FILE_NAME, "r") as col_meta:
+        with open(TABLET_SERVER_NAME + "/" + META_PATH + COL_META_FILE_NAME, "r") as col_meta:
             line = col_meta.readline()
             while len(line) > 1:
                 json_value = json.loads(line)
@@ -130,17 +134,17 @@ def recover_from_col_meta():
                     tables_info[table_name] = json_value
                 line = col_meta.readline()
     except IOError:
-        if not os.path.exists(META_PATH):
-            os.mkdir(META_PATH)
-        open(META_PATH + COL_META_FILE_NAME, 'w').close()
+        if not os.path.exists(TABLET_SERVER_NAME + "/" + META_PATH):
+            os.mkdir(TABLET_SERVER_NAME + "/" + META_PATH)
+        open(TABLET_SERVER_NAME + "/" + META_PATH + COL_META_FILE_NAME, 'w').close()
 
 
 def write_ahead_log(operation, table, content):
     try:
-        with open(WAL_PATH + table + WAL_LOG_FILE_NAME, "a") as log:
+        with open(TABLET_SERVER_NAME + "/" + WAL_PATH + table + WAL_LOG_FILE_NAME, "a") as log:
             log.write(str(operation) + "*" + table + "*" + json.dumps(content) + "\n")
     except IOError:
-        with open(WAL_PATH + table + WAL_LOG_FILE_NAME, "w") as log:
+        with open(TABLET_SERVER_NAME + "/" + WAL_PATH + table + WAL_LOG_FILE_NAME, "w") as log:
             log.write(str(operation) + "*" + table + "*" + json.dumps(content) + "\n")
 
 
@@ -148,17 +152,17 @@ def spill_to_the_disk():
     for table in num_row_keys:
         if num_row_keys[table] >= tables_max_size:
             try:
-                with open(DISK_PATH + table + ".table", "a") as db:
+                with open(TABLET_SERVER_NAME + "/" + DISK_PATH + table + ".table", "a") as db:
                     SSTable = {}
                     for row_key in memtables[table]:
                         SSTable[row_key] = memtables[table][row_key]
                     SSTable = dict(sorted(SSTable.items(), key=lambda x: x[0]))
                     db.write(json.dumps(SSTable) + "\n")
                     clean_memtables(table)
-                    os.remove(WAL_PATH + table + WAL_LOG_FILE_NAME)
+                    os.remove(TABLET_SERVER_NAME + "/" +WAL_PATH + table + WAL_LOG_FILE_NAME)
 
             except IOError:
-                with open(DISK_PATH + table + ".table", "w") as db:
+                with open(TABLET_SERVER_NAME + "/" + DISK_PATH + table + ".table", "w") as db:
                     sorted_table = dict(sorted(memtables[table].items(), key=lambda x: x[0]))
                     json.dump(sorted_table, db)
 
@@ -207,11 +211,11 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def recover_from_log(self):
         try:
-            f_list = os.listdir(WAL_PATH)
+            f_list = os.listdir(TABLET_SERVER_NAME + "/" +WAL_PATH)
             for file in f_list:
                 if os.path.splitext(file)[1] == '.log':
                     table = os.path.splitext(file)[0]
-                    with open(WAL_PATH + table + WAL_LOG_FILE_NAME, "r") as log:
+                    with open(TABLET_SERVER_NAME + "/" + WAL_PATH + table + WAL_LOG_FILE_NAME, "r") as log:
                         line = log.readline()
                         while line:
                             opertaion = line.split("*")[0]
@@ -231,7 +235,7 @@ class MyHandler(BaseHTTPRequestHandler):
                                 spill_to_the_disk()
                             line = log.readline()
         except IOError:
-            os.makedirs(WAL_PATH)
+            os.makedirs(TABLET_SERVER_NAME + "/" + WAL_PATH)
 
     def insert_cell(self, input, table_name):
         if table_name not in table_list["tables"]:
@@ -280,7 +284,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 self._set_response(400)
 
     def find_in_disk(self, table_name, cell_dic, row_value, col_key):
-        for file in os.listdir(DISK_PATH):
+        for file in os.listdir(TABLET_SERVER_NAME + "/" + DISK_PATH):
             if file == table_name + ".table":
                 SSTables = get_disk_json(table_name)
                 for SSTable in SSTables:
@@ -355,7 +359,7 @@ class MyHandler(BaseHTTPRequestHandler):
                             self._set_response(404)
                             return
             # search disk
-            for file in os.listdir(DISK_PATH):
+            for file in os.listdir(TABLET_SERVER_NAME + "/" + DISK_PATH):
                 if file == table_name + ".table":
                     SSTables = get_disk_json(table_name)
                     for SSTable in SSTables:
@@ -483,9 +487,9 @@ class MyHandler(BaseHTTPRequestHandler):
                             # if table in memtable
                             memtables.pop(table_name)
 
-                        for file in os.listdir(DISK_PATH):
+                        for file in os.listdir(TABLET_SERVER_NAME + "/" + DISK_PATH):
                             if file == table_name + ".table":
-                                file_path = os.path.join(DISK_PATH, file)
+                                file_path = os.path.join(TABLET_SERVER_NAME + "/" + DISK_PATH, file)
                                 os.remove(file_path)
 
                         write_ahead_log(4, table_name, "")
@@ -503,6 +507,8 @@ if __name__ == "__main__":
     master_host_name = sys.argv[3]
     master_host_port = int(sys.argv[4])
 
+    TABLET_SERVER_NAME = host_name + ":" + str(host_port)
+
     server_address = (host_name, host_port)
     handler_class = MyHandler
     server_class = HTTPServer
@@ -510,8 +516,10 @@ if __name__ == "__main__":
     httpd = HTTPServer(server_address, handler_class)
 
     try:
-        if not os.path.exists(DISK_PATH):
-            os.mkdir(DISK_PATH)
+        if not os.path.exists(TABLET_SERVER_NAME):
+            os.mkdir(TABLET_SERVER_NAME)
+        if not os.path.exists(TABLET_SERVER_NAME + "/" +DISK_PATH):
+            os.mkdir(TABLET_SERVER_NAME + "/" + DISK_PATH)
         recover_from_col_meta()
         recover_from_row_meta()
         handler_class.recover_from_log(handler_class)
