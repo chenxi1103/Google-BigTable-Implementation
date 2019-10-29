@@ -85,24 +85,27 @@ class MyHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        # example: this is how you get path and command
-        print(self.path)
-        print(self.command)
-
-        # example: returning an object as JSON
-        data = {
-            "row": "sample_a",
-            "data": [
-                {
-                    "value": "data_a",
-                    "time": "1234"
-                }
-            ]
-        }
-        data_json = json.dumps(data)
-
-        self._set_response(200)
-        self.wfile.write(data_json.encode("utf8"))
+        if self.command == 'GET':
+            url = self.path.split('/')[1:]
+            print(len(url))
+            print(url)
+            if url[0] == 'api' and url[1] == 'tables' and len(url) <= 4:
+                # List Tables
+                if len(url) == 2:
+                    data = table_list
+                    data_json = json.dumps(data)
+                    self._set_response(200)
+                    self.wfile.write(data_json.encode("utf8"))
+                # Get Table info
+                elif len(url) == 3:
+                    table_name = url[2]
+                    if table_name in tables_info:
+                        data = tables_info.get(table_name)
+                        data_json = json.dumps(data)
+                        self._set_response(200)
+                        self.wfile.write(data_json.encode("utf8"))
+                    else:
+                        self._set_response(404)
 
     def do_POST(self):
         # example: reading content from HTTP request
