@@ -33,7 +33,8 @@ class MyHandler(BaseHTTPRequestHandler):
     def create_table(self, input):
         table_name = input.get("name")
         if table_name in table_list.get("tables"):
-            return False
+            self._set_response(409)
+            return
         else:
             # update table_list
             table_list["tables"].append(table_name)
@@ -47,17 +48,16 @@ class MyHandler(BaseHTTPRequestHandler):
                 port = current_tablet.split(":")[1]
                 # update table_dict
                 tablet_dict[current_tablet].append(table_name)
-                return_json = {"hostname": hostname, "port": port}
+                return_json = json.dumps({"hostname": hostname, "port": port})
 
                 # update table_info
                 tables_info[table_name] = {}
                 tables_info[table_name]["name"] = table_name
                 tables_info[table_name]["tablets"] = []
                 tables_info[table_name]["tablets"].append({"hostname": hostname, "port": port, "row_from": "", "row_to": ""})
-
                 self._set_response(200)
                 self.wfile.write(return_json.encode("utf8"))
-                return True
+                return
 
 
     def _set_response(self, code):
@@ -112,15 +112,8 @@ class MyHandler(BaseHTTPRequestHandler):
                         self._set_response(400)
                         return
 
-                    flag = self.create_table(json.loads(data))
-                    if not flag:
-                        self._set_response(409)
-                    else:
-                        self._set_response(200)
+                    self.create_table(json.loads(data))
                     print_info()
-
-            # print the content, just for you to see it =)
-            print(data)
 
         self._set_response(200)
 

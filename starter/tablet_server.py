@@ -36,6 +36,18 @@ COL_META_FILE_NAME = "col.meta"
 WAL_LOG_FILE_NAME = ".log"
 MEMTABLE_SIZE_FILE_NAME = "memtable_max_size.meta"
 
+def check_tables():
+    print("============= Table Rows ===============")
+    print(tables_rows)
+    print("============= Table Columns ===============")
+    print(tables_columns)
+    print("============= Table Info ===============")
+    print(tables_info)
+    print("============= Table list ===============")
+    print(table_list)
+    print("============= Memtables ===============")
+    print(memtables)
+
 
 def get_disk_json(table_name):
     list = []
@@ -444,6 +456,7 @@ class MyHandler(BaseHTTPRequestHandler):
                         self._set_response(200)
                     except:
                         self._set_response(400)
+                check_tables()
 
     def do_DELETE(self):
         content_length = self.headers['content-length']
@@ -477,6 +490,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
                         write_ahead_log(4, table_name, "")
                         self._set_response(200)
+                check_tables()
 
 def join_master(host_name, host_port, master_host_name, master_host_port):
     data = {"host_name" : host_name, "host_port" : host_port}
