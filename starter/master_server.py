@@ -12,6 +12,7 @@ table_list = {"tables": []}
 tables_info = {}
 global tablet_index
 tablet_index = 0
+lock_tables = []
 
 
 def print_info():
@@ -21,6 +22,8 @@ def print_info():
     print(table_list)
     print("================ table_info =================")
     print(tables_info)
+    print("================ locked_table =================")
+    print(lock_tables)
 
 
 def check_json(input):
@@ -46,6 +49,29 @@ def update_table_info(jsonvalue):
 
 
 class MyHandler(BaseHTTPRequestHandler):
+    def lock_table(self, table_name):
+        if table_name not in table_list['tables']:
+            self._set_response(404)
+            return
+        if table_name in lock_tables:
+            self._set_response(400)
+            return
+        lock_tables.append(table_name)
+        self._set_response(200)
+        return
+
+    def release_lock(self, table_name):
+        if table_name not in table_list['tables']:
+            self._set_response(404)
+            return
+        if table_name not in lock_tables:
+            self._set_response(400)
+            return
+        lock_tables.remove(table_name)
+        self._set_response(200)
+        return
+
+
     def create_table(self, input):
         table_name = input.get("name")
         if table_name in table_list.get("tables"):
@@ -78,6 +104,9 @@ class MyHandler(BaseHTTPRequestHandler):
                 return
 
     def delete_table(self, table_name):
+        if table_name in lock_tables:
+            self._set_response(409)
+            return
         # update table list
         table_list["tables"].remove(table_name)
         # update table info
@@ -156,6 +185,11 @@ class MyHandler(BaseHTTPRequestHandler):
                     update_table_info(json_value)
                     self._set_response(200)
 
+                # lock a table
+                elif path_1 == 'lock':
+                    table_name = request_path.split("/")[3]
+                    self.lock_table(table_name)
+
                 print_info()
 
         self._set_response(200)
@@ -168,6 +202,7 @@ class MyHandler(BaseHTTPRequestHandler):
             url = self.path.split('/')[1:]
             print(url)
             if len(url) >= 2:
+                # delete a table
                 if url[1] == "tables":
                     table_name = url[2]
                     if table_name not in table_list["tables"]:
@@ -176,6 +211,11 @@ class MyHandler(BaseHTTPRequestHandler):
                         return
                     else:
                         self.delete_table(table_name)
+
+                # release the lock
+                if url[1] == "lock":
+                    table_name = url[2]
+                    self.release_lock(table_name)
 
             print_info()
 
