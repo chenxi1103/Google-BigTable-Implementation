@@ -1,4 +1,5 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
+import requests
 import json
 import collections
 import os
@@ -436,14 +437,10 @@ class MyHandler(BaseHTTPRequestHandler):
                     try:
                         global tables_max_size
                         new_size = int(json_value["memtable_max"])
-                        print("---")
                         tables_max_size = new_size
                         write_ahead_log(3, "default", json_value)
-                        print("----")
                         spill_to_the_disk()
-                        print("-----")
                         metadata_for_max_size(str(new_size))
-                        print("-------")
                         self._set_response(200)
                     except:
                         self._set_response(400)
@@ -481,16 +478,22 @@ class MyHandler(BaseHTTPRequestHandler):
                         write_ahead_log(4, table_name, "")
                         self._set_response(200)
 
+def join_master(host_name, host_port, master_host_name, master_host_port):
+    data = {"host_name" : host_name, "host_port" : host_port}
+    url = "http://"+master_host_name+":"+ str(master_host_port) + "/api/join"
+    requests.post(url, json=data)
 
 if __name__ == "__main__":
     host_name = sys.argv[1]
     host_port = int(sys.argv[2])
+    master_host_name = sys.argv[3]
+    master_host_port = int(sys.argv[4])
+
     server_address = (host_name, host_port)
     handler_class = MyHandler
     server_class = HTTPServer
 
     httpd = HTTPServer(server_address, handler_class)
-    print("sample server running...")
 
     try:
         if not os.path.exists(DISK_PATH):
@@ -499,6 +502,7 @@ if __name__ == "__main__":
         recover_from_row_meta()
         handler_class.recover_from_log(handler_class)
         recover_from_max_size_meta()
+        join_master(host_name, host_port, master_host_name, master_host_port)
         httpd.serve_forever()
     except KeyboardInterrupt:
         pass

@@ -120,7 +120,7 @@ def recover_from_col_meta():
 
 
 def write_ahead_log(operation, table, content):
-    with open(META_WAL_PATH + WAL_LOG_FILE_NAME, "a") as log:
+    with open(META_WAL_PATH  + WAL_LOG_FILE_NAME, "a") as log:
         log.write(str(operation) + "*" + table + "*" + json.dumps(content) + "\n")
 
 
