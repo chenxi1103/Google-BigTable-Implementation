@@ -39,9 +39,10 @@ def update_table_info(jsonvalue):
         for tablet_item in tablets:
             if tablet_item["hostname"] == tablet.split(":")[0] and str(tablet_item["port"]) == str(
                     tablet.split(":")[1]):
-                tablet_item["row_from"] = data[table_name][0]
-                tablet_item["row_to"] = data[table_name][len(data[table_name]) - 1]
-                break
+                if len(data[table_name]) != 0:
+                    tablet_item["row_from"] = data[table_name][0]
+                    tablet_item["row_to"] = data[table_name][len(data[table_name]) - 1]
+                    break
 
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -141,7 +142,6 @@ class MyHandler(BaseHTTPRequestHandler):
                     tablet_path = tablet_host + ":" + str(tablet_port)
                     tablet_dict[tablet_path] = []
                     tablet_list.append(tablet_path)
-                    print_info()
                 # create a table
                 elif path_1 == 'tables':
                     if not check_json(data):
@@ -155,6 +155,8 @@ class MyHandler(BaseHTTPRequestHandler):
                     json_value = json.loads(data)
                     update_table_info(json_value)
                     self._set_response(200)
+
+                print_info()
 
         self._set_response(200)
 
