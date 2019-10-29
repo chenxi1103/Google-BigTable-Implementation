@@ -13,6 +13,7 @@ tables_info = {}
 global tablet_index
 tablet_index = 0
 
+
 def print_info():
     print("================ tablet_dict =================")
     print(tablet_dict)
@@ -28,6 +29,20 @@ def check_json(input):
         return True
     except:
         return False
+
+
+def update_table_info(jsonvalue):
+    tablet = jsonvalue["tablet"]
+    data = jsonvalue["data"]
+    for table_name in data:
+        tablets = tables_info[table_name]['tablets']
+        for tablet_item in tablets:
+            if tablet_item["hostname"] == tablet.split(":")[0] and str(tablet_item["port"]) == str(
+                    tablet.split(":")[1]):
+                tablet_item["row_from"] = data[table_name][0]
+                tablet_item["row_to"] = data[table_name][len(data[table_name]) - 1]
+                break
+
 
 class MyHandler(BaseHTTPRequestHandler):
     def create_table(self, input):
@@ -54,7 +69,8 @@ class MyHandler(BaseHTTPRequestHandler):
                 tables_info[table_name] = {}
                 tables_info[table_name]["name"] = table_name
                 tables_info[table_name]["tablets"] = []
-                tables_info[table_name]["tablets"].append({"hostname": hostname, "port": port, "row_from": "", "row_to": ""})
+                tables_info[table_name]["tablets"].append(
+                    {"hostname": hostname, "port": port, "row_from": "", "row_to": ""})
                 self._set_response(200)
                 self.wfile.write(return_json.encode("utf8"))
                 print_info()
@@ -76,8 +92,6 @@ class MyHandler(BaseHTTPRequestHandler):
                     return
         self._set_response(200)
         return
-
-
 
     def _set_response(self, code):
         self.send_response(code)
@@ -136,6 +150,12 @@ class MyHandler(BaseHTTPRequestHandler):
                     else:
                         self.create_table(json.loads(data))
 
+                # update row key
+                elif path_1 == 'update_rowkey':
+                    json_value = json.loads(data)
+                    update_table_info(json_value)
+                    self._set_response(200)
+
         self._set_response(200)
 
     def do_DELETE(self):
@@ -157,6 +177,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
             print_info()
 
+
 if __name__ == "__main__":
     host_name = sys.argv[1]
     host_port = int(sys.argv[2])
@@ -173,4 +194,3 @@ if __name__ == "__main__":
         pass
 
     httpd.server_close()
-

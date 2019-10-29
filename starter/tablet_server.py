@@ -4,6 +4,7 @@ import json
 import collections
 import os
 import sys
+import heapq
 
 # In-memory Memtable
 memtables = {}
@@ -34,11 +35,14 @@ WAL_PATH = "WAL/"
 global TABLET_SERVER_NAME
 TABLET_SERVER_NAME = ""
 
+global MASTER_SERVER_NAME
+MASTER_SERVER_NAME = ""
 
 ROW_META_FILE_NAME = "row.meta"
 COL_META_FILE_NAME = "col.meta"
 WAL_LOG_FILE_NAME = ".log"
 MEMTABLE_SIZE_FILE_NAME = "memtable_max_size.meta"
+
 
 def check_tables():
     print("============= Table Rows ===============")
@@ -51,6 +55,12 @@ def check_tables():
     print(table_list)
     print("============= Memtables ===============")
     print(memtables)
+
+
+def update_row_key_to_master():
+    url = "http://" + MASTER_SERVER_NAME + "/api/update_rowkey"
+    jsonvalue = {"tablet": TABLET_SERVER_NAME, "data": tables_rows}
+    requests.post(url, json.dumps(jsonvalue))
 
 
 def get_disk_json(table_name):
@@ -108,8 +118,11 @@ def recover_from_row_meta():
                 if table_name not in tables_rows:
                     tables_rows[table_name] = []
                 if row_key not in tables_rows[table_name]:
-                    tables_rows[table_name].append(row_key)
+                    heapq.heappush(tables_rows[table_name], row_key)
+                    # tables_rows[table_name].append(row_key)
                 line = row_meta.readline()
+        update_row_key_to_master()
+
     except IOError:
         if not os.path.exists(TABLET_SERVER_NAME + "/" + META_PATH):
             os.mkdir(TABLET_SERVER_NAME + "/" + META_PATH)
@@ -159,7 +172,7 @@ def spill_to_the_disk():
                     SSTable = dict(sorted(SSTable.items(), key=lambda x: x[0]))
                     db.write(json.dumps(SSTable) + "\n")
                     clean_memtables(table)
-                    os.remove(TABLET_SERVER_NAME + "/" +WAL_PATH + table + WAL_LOG_FILE_NAME)
+                    os.remove(TABLET_SERVER_NAME + "/" + WAL_PATH + table + WAL_LOG_FILE_NAME)
 
             except IOError:
                 with open(TABLET_SERVER_NAME + "/" + DISK_PATH + table + ".table", "w") as db:
@@ -211,7 +224,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def recover_from_log(self):
         try:
-            f_list = os.listdir(TABLET_SERVER_NAME + "/" +WAL_PATH)
+            f_list = os.listdir(TABLET_SERVER_NAME + "/" + WAL_PATH)
             for file in f_list:
                 if os.path.splitext(file)[1] == '.log':
                     table = os.path.splitext(file)[0]
@@ -259,6 +272,7 @@ class MyHandler(BaseHTTPRequestHandler):
                         if row not in memtables[table_name]:
                             memtables[table_name][row] = {}
                             num_row_keys[table_name] += 1
+                            # tell master server row key is updated
                         if col_index not in memtables[table_name][row]:
                             memtables[table_name][row][col_index] = collections.OrderedDict()
                             memtables[table_name][row][col_index][data[0]["time"]] = data[0]["value"]
@@ -272,9 +286,11 @@ class MyHandler(BaseHTTPRequestHandler):
 
                         # put new row into row in-memory index
                         if row not in tables_rows[table_name]:
-                            tables_rows[table_name].append(row)
+                            heapq.heappush(tables_rows[table_name], row)
+                            # tables_rows[table_name].append(row)
                             # If this is a new row key, write it in metadata
                             metadata_for_row_index(table_name, row)
+                            update_row_key_to_master()
 
                         write_ahead_log(2, table_name, dict)
                         spill_to_the_disk()
@@ -496,10 +512,12 @@ class MyHandler(BaseHTTPRequestHandler):
                         self._set_response(200)
                 check_tables()
 
+
 def join_master(host_name, host_port, master_host_name, master_host_port):
-    data = {"host_name" : host_name, "host_port" : host_port}
-    url = "http://"+master_host_name+":"+ str(master_host_port) + "/api/join"
+    data = {"host_name": host_name, "host_port": host_port}
+    url = "http://" + master_host_name + ":" + str(master_host_port) + "/api/join"
     requests.post(url, json=data)
+
 
 if __name__ == "__main__":
     host_name = sys.argv[1]
@@ -508,6 +526,7 @@ if __name__ == "__main__":
     master_host_port = int(sys.argv[4])
 
     TABLET_SERVER_NAME = host_name + ":" + str(host_port)
+    MASTER_SERVER_NAME = master_host_name + ":" + str(master_host_port)
 
     server_address = (host_name, host_port)
     handler_class = MyHandler
@@ -518,7 +537,7 @@ if __name__ == "__main__":
     try:
         if not os.path.exists(TABLET_SERVER_NAME):
             os.mkdir(TABLET_SERVER_NAME)
-        if not os.path.exists(TABLET_SERVER_NAME + "/" +DISK_PATH):
+        if not os.path.exists(TABLET_SERVER_NAME + "/" + DISK_PATH):
             os.mkdir(TABLET_SERVER_NAME + "/" + DISK_PATH)
         recover_from_col_meta()
         recover_from_row_meta()
