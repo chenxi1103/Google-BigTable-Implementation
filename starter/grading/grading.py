@@ -9,28 +9,32 @@ from cp2_BalancerTests import BalancerTests
 
 def checkpoint1(hostname, port):
     total = 0
+    results = []
 
     print("Running tests for Checkpoint 1")
 
     TableTests.HOSTNAME = hostname
     TableTests.PORT = port
     runner = unittest.TextTestRunner()
-    runner.run(TableTests.suite())
+    results.append(runner.run(TableTests.suite()))
 
     OpTests.HOSTNAME = hostname
     OpTests.PORT = port
     runner = unittest.TextTestRunner()
-    runner.run(OpTests.suite())
+    results.append(runner.run(OpTests.suite()))
 
     StressTests.HOSTNAME = hostname
     StressTests.PORT = port
     runner = unittest.TextTestRunner()
-    runner.run(StressTests.suite())
+    results.append(runner.run(StressTests.suite()))
 
     KillTests.HOSTNAME = hostname
     KillTests.PORT = port
     runner = unittest.TextTestRunner()
-    runner.run(KillTests.suite())
+    results.append(runner.run(KillTests.suite()))
+
+    for result in results:
+        print(result)
 
     return total
 

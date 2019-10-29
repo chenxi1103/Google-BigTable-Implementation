@@ -57,7 +57,26 @@ class MyHandler(BaseHTTPRequestHandler):
                 tables_info[table_name]["tablets"].append({"hostname": hostname, "port": port, "row_from": "", "row_to": ""})
                 self._set_response(200)
                 self.wfile.write(return_json.encode("utf8"))
+                print_info()
                 return
+
+    def delete_table(self, table_name):
+        # update table list
+        table_list["tables"].remove(table_name)
+        # update table info
+        del tables_info[table_name]
+        for tablet in tablet_dict:
+            if table_name in tablet_dict[tablet]:
+                tablet_dict[tablet].remove(table_name)
+
+                url = "http://" + tablet + "/api/tables/" + table_name
+                response = requests.delete(url)
+                if response.status_code != 200:
+                    self._set_response(response.status_code)
+                    return
+        self._set_response(200)
+        return
+
 
 
     def _set_response(self, code):
@@ -111,16 +130,29 @@ class MyHandler(BaseHTTPRequestHandler):
                     if not check_json(data):
                         self._set_response(400)
                         return
-
-                    self.create_table(json.loads(data))
-                    print_info()
+                    else:
+                        self.create_table(json.loads(data))
 
         self._set_response(200)
 
     def do_DELETE(self):
-        # example: send just a 200
-        self._set_response(200)
+        content_length = self.headers['content-length']
+        if content_length:
+            content_length = int(content_length)
+            data = self.rfile.read(content_length)
+            url = self.path.split('/')[1:]
+            print(url)
+            if len(url) >= 2:
+                if url[1] == "tables":
+                    table_name = url[2]
+                    if table_name not in table_list["tables"]:
+                        # table not exist in table list
+                        self._set_response(404)
+                        return
+                    else:
+                        self.delete_table(table_name)
 
+            print_info()
 
 if __name__ == "__main__":
     host_name = sys.argv[1]

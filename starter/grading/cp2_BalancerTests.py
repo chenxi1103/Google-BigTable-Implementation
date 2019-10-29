@@ -7,6 +7,8 @@ from cp1_OpTests import OpTests
 class BalancerTests(unittest.TestCase):
     HOSTNAME = "host"
     PORT = 80
+    # limit no of rows to this to avoid sharding
+    SAFE_LIMIT = 900
 
     movie_schema = []
     movie_data = []
@@ -27,10 +29,10 @@ class BalancerTests(unittest.TestCase):
         return suite
 
     def test_populate_data(self):
-        movie_file = os.path.join(os.getcwd(), "../dataset/movies.csv")
+        movie_file = os.path.join(os.getcwd(), "./dataset/movies.csv")
         self.assertTrue(os.path.exists(movie_file))
 
-        camera_file = os.path.join(os.getcwd(), "../dataset/camera.csv")
+        camera_file = os.path.join(os.getcwd(), "./dataset/camera.csv")
         self.assertTrue(os.path.exists(camera_file))
 
         # Read in the movies data
@@ -45,7 +47,7 @@ class BalancerTests(unittest.TestCase):
                 self.movie_data.append(fields)
 
         # Read in the camera data
-        lines = open(movie_file).read().splitlines()
+        lines = open(camera_file).read().splitlines()
         for field in lines[0].split(','):
             self.camera_schema.append(field)
 
@@ -147,7 +149,7 @@ class BalancerTests(unittest.TestCase):
                 request = {
                     "column_family": schema[i],
                     "column": schema[i],
-                    "row": row_id,
+                    "row": str(row_id),
                     "data": [{
                         "value": data[i],
                         "time": row_id
@@ -157,6 +159,8 @@ class BalancerTests(unittest.TestCase):
                 self.assertEqual(response.status_code, 200)
 
             row_id = row_id + 1
+            if row_id > self.SAFE_LIMIT:
+                break
         
         row_id = 0
         for data in csv_data:
@@ -164,11 +168,11 @@ class BalancerTests(unittest.TestCase):
                 request = {
                     "column_family": schema[i],
                     "column": schema[i],
-                    "row": row_id,
+                    "row": str(row_id),
                 }
                 
                 expected = {
-                    "row": row_id,
+                    "row": str(row_id),
                     "data": [{
                         "value": data[i],
                         "time": row_id
@@ -180,3 +184,5 @@ class BalancerTests(unittest.TestCase):
                 self.assertEqual(response.json(), expected)
 
             row_id = row_id + 1
+            if row_id > self.SAFE_LIMIT:
+                break

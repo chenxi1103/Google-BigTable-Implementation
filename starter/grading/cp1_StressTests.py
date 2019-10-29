@@ -81,7 +81,7 @@ class StressTests(unittest.TestCase):
                 request = {
                     "column_family": self.schema[i],
                     "column": self.schema[i],
-                    "row": row_id,
+                    "row": str(row_id),
                     "data": [{
                         "value": data[i],
                         "time": row_id
@@ -98,11 +98,11 @@ class StressTests(unittest.TestCase):
                 request = {
                     "column_family": self.schema[i],
                     "column": self.schema[i],
-                    "row": row_id,
+                    "row": str(row_id),
                 }
                 
                 expected = {
-                    "row": row_id,
+                    "row": str(row_id),
                     "data": [{
                         "value": data[i],
                         "time": row_id
@@ -129,7 +129,7 @@ class StressTests(unittest.TestCase):
                 request = {
                     "column_family": self.schema[i],
                     "column": self.schema[i],
-                    "row": row_id,
+                    "row": str(row_id),
                     "data": [{
                         "value": data[i],
                         "time": row_id
@@ -145,11 +145,11 @@ class StressTests(unittest.TestCase):
                 request = {
                     "column_family": self.schema[i],
                     "column": self.schema[i],
-                    "row": row_id,
+                    "row": str(row_id),
                 }
                 
                 expected = {
-                    "row": row_id,
+                    "row": str(row_id),
                     "data": [{
                         "value": data[i],
                         "time": row_id

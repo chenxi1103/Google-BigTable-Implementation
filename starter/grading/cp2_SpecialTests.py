@@ -7,6 +7,7 @@ class SpecialTests(unittest.TestCase):
     MAX_UNIQUE_ROWS = 1000
     MEM_TABLE_LIMIT = 100
     EXTRA_ROWS = 200
+    OFFSET = 10000
 
     def suite():
         suite = unittest.TestSuite()
@@ -60,8 +61,8 @@ class SpecialTests(unittest.TestCase):
             response = requests.post(url_tablet, 
                     json={
                         "column_family": "fam1", "column": "key1",
-                        "row": i, "data": [{
-                            "value" : str(i),
+                        "row": str(self.OFFSET + i), "data": [{
+                            "value" : str(self.OFFSET + i),
                             "time" : 0
                         }]
                     })
@@ -99,8 +100,8 @@ class SpecialTests(unittest.TestCase):
         match_found = False
         tablet_left = None
         tablet_right = None
-        divider_row = str(self.MAX_UNIQUE_ROWS // 2)
-
+        divider_row = str(self.OFFSET + (self.MAX_UNIQUE_ROWS // 2))
+        
         if tablet1['row_from'] == divider_row:
             match_found = True
             tablet_left = tablet2
@@ -115,20 +116,20 @@ class SpecialTests(unittest.TestCase):
 
         self.assertTrue(match_found)
 
-        # Read row id = 0 from the left shard (lower order keys) - success
+        # Read row id = self.OFFSET + 0 from the left shard (lower order keys) - success
         url_tablet = MySupport.url(tablet_left['hostname'], tablet_left['port'], 
                                    "/api/table/table_shard/cell")
 
         request = {
             "column_family": "fam1",
             "column": "key1",
-            "row": 0,
+            "row": str(self.OFFSET + 0),
         }
                 
         expected = {
-            "row": 0,
+            "row": str(self.OFFSET + 0),
             "data": [{
-                "value": "0",
+                "value": str(self.OFFSET + 0),
                 "time": 0
             }]
         }
@@ -141,8 +142,8 @@ class SpecialTests(unittest.TestCase):
         url_tablet = MySupport.url(tablet_right['hostname'], tablet_right['port'],
                                    "/api/table/table_shard/cell")
         
-        request["row"] = int(divider_row)
-        expected["row"] = int(divider_row)
+        request["row"] = divider_row
+        expected["row"] = divider_row
         expected["data"][0]["value"] = divider_row
 
         response = requests.get(url_tablet, json = request)
