@@ -5,6 +5,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import requests
 import json
 import sys
+import collections
 
 tablet_dict = {}
 tablet_list = []
@@ -112,6 +113,26 @@ class MyHandler(BaseHTTPRequestHandler):
                 print_info()
                 return
 
+    def retrieve_cell(self, table_name):
+        content_length = self.headers['content-length']
+        if content_length:
+            content_length = int(content_length)
+            data = str(self.rfile.read(content_length).decode("utf-8"))
+            data_json = json.loads(data)
+            row_value = data_json.get("row")
+            table_dic = tables_info.get(table_name)
+            for tablet in table_dic['tablets']:
+                if tablet['row_from'] <= row_value <= tablet['row_to']:
+                    host = tablet['hostname']
+                    port = tablet['port']
+                    url = "http://" + str(host) + ":" + str(port) + "/api/table/" + table_name + "/cell"
+                    response = requests.get(url)
+                    if response.status_code != 200:
+                        self._set_response(response.status_code)
+                        return
+            self._set_response(200)
+            return
+
     def delete_table(self, table_name):
         for client in lock_tables:
             if table_name in lock_tables[client]:
@@ -162,6 +183,13 @@ class MyHandler(BaseHTTPRequestHandler):
                     else:
                         self._set_response(404)
                         return
+            elif url[0] == 'api' and url[1] == 'table' and url[-1] == 'cell':
+                # Retrieve a cell
+                table_name = url[2]
+                if table_name not in table_list["tables"]:
+                    self._set_response(404)
+                    return
+                self.retrieve_cell(table_name)
 
     def do_POST(self):
         # example: reading content from HTTP request
