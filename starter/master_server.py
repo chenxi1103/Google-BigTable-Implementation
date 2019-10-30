@@ -12,7 +12,7 @@ table_list = {"tables": []}
 tables_info = {}
 global tablet_index
 tablet_index = 0
-lock_tables = []
+lock_tables = {}
 
 
 def print_info():
@@ -49,39 +49,48 @@ def update_table_info(jsonvalue):
 
 
 class MyHandler(BaseHTTPRequestHandler):
-    def lock_table(self, table_name):
+    def lock_table(self, table_name, client):
         if table_name not in table_list['tables']:
             self._set_response(404)
             return
-        if table_name in lock_tables:
+        if client not in lock_tables:
+            lock_tables[client] = []
+        if table_name in lock_tables[client]:
             self._set_response(400)
             return
-        lock_tables.append(table_name)
-        self._set_response(200)
-        return
+        else:
+            lock_tables[client].append(table_name)
+            self._set_response(200)
+            return
 
-    def release_lock(self, table_name):
+    def release_lock(self, table_name, client):
         if table_name not in table_list['tables']:
             self._set_response(404)
             return
-        if table_name not in lock_tables:
+
+        if client not in lock_tables:
             self._set_response(400)
             return
-        lock_tables.remove(table_name)
-        self._set_response(200)
-        return
+        else:
+            if table_name not in lock_tables[client]:
+                self._set_response(400)
+                return
+            else:
+                lock_tables[client].remove(table_name)
+                self._set_response(200)
+                return
 
 
     def create_table(self, input):
         table_name = input.get("name")
-        if table_name in table_list.get("tables"):
+        if table_name in table_list["tables"]:
             self._set_response(409)
             return
         else:
             # update table_list
             table_list["tables"].append(table_name)
             global tablet_index
-            current_tablet = tablet_list[tablet_index % len(table_list)]
+            current_tablet = tablet_list[tablet_index % len(tablet_list)]
             tablet_index += 1
             url = "http://" + current_tablet + "/api/tables"
             response = requests.post(url, json=input)
@@ -104,9 +113,11 @@ class MyHandler(BaseHTTPRequestHandler):
                 return
 
     def delete_table(self, table_name):
-        if table_name in lock_tables:
-            self._set_response(409)
-            return
+        for client in lock_tables:
+            if table_name in lock_tables[client]:
+                self._set_response(409)
+                return
+
         # update table list
         table_list["tables"].remove(table_name)
         # update table info
@@ -131,8 +142,6 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.command == 'GET':
             url = self.path.split('/')[1:]
-            print(len(url))
-            print(url)
             if url[0] == 'api' and url[1] == 'tables' and len(url) <= 4:
                 # List Tables
                 if len(url) == 2:
@@ -140,16 +149,19 @@ class MyHandler(BaseHTTPRequestHandler):
                     data_json = json.dumps(data)
                     self._set_response(200)
                     self.wfile.write(data_json.encode("utf8"))
+                    return
                 # Get Table info
-                elif len(url) == 3:
+                elif len(url) > 2:
                     table_name = url[2]
                     if table_name in tables_info:
                         data = tables_info.get(table_name)
                         data_json = json.dumps(data)
                         self._set_response(200)
                         self.wfile.write(data_json.encode("utf8"))
+                        return
                     else:
                         self._set_response(404)
+                        return
 
     def do_POST(self):
         # example: reading content from HTTP request
@@ -178,6 +190,7 @@ class MyHandler(BaseHTTPRequestHandler):
                         return
                     else:
                         self.create_table(json.loads(data))
+                        return
 
                 # update row key
                 elif path_1 == 'update_rowkey':
@@ -188,7 +201,9 @@ class MyHandler(BaseHTTPRequestHandler):
                 # lock a table
                 elif path_1 == 'lock':
                     table_name = request_path.split("/")[3]
-                    self.lock_table(table_name)
+                    json_value = json.loads(data)
+                    client = json_value["client_id"]
+                    self.lock_table(table_name, client)
 
                 print_info()
 
@@ -215,7 +230,9 @@ class MyHandler(BaseHTTPRequestHandler):
                 # release the lock
                 if url[1] == "lock":
                     table_name = url[2]
-                    self.release_lock(table_name)
+                    json_value = json.loads(data)
+                    client = json_value["client_id"]
+                    self.release_lock(table_name, client)
 
             print_info()
 
