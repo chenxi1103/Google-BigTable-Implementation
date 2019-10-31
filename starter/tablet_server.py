@@ -5,6 +5,7 @@ import collections
 import os
 import sys
 import heapq
+from threading import Thread
 
 # In-memory Memtable
 memtables = {}
@@ -20,6 +21,9 @@ table_list = {"tables": []}
 # Memtable Max size
 global tables_max_size
 tables_max_size = 100
+
+global shard_max_size
+shard_max_size = 1000
 
 # In-memory number of row key
 # global num_row_key
@@ -44,17 +48,145 @@ WAL_LOG_FILE_NAME = ".log"
 MEMTABLE_SIZE_FILE_NAME = "memtable_max_size.meta"
 
 
+# check每个table有没有超过1000，超过了就给master server发request请求shard
+def check_shard_request():
+    url = "http://" + MASTER_SERVER_NAME + "/api/shard_request"
+    for table_name in tables_rows:
+        if len(tables_rows[table_name]) >= shard_max_size:
+            rowkeys = sorted(tables_rows[table_name])
+            shard_row = rowkeys[:shard_max_size // 2 + 1]
+            original_row = rowkeys[shard_max_size // 2:]
+
+            # jsonvalue = {"tablet" : TABLET_SERVER_NAME, "table" : table_name}
+            # requests.post(url, json.dumps(jsonvalue))
+
+            t1 = Thread(target=shard_to_other_tablet, args=(json.dumps({'table': 'table_shard', 'tablet': 'localhost:8082'}),shard_row, original_row))
+            t1.start()
+            # shard_to_other_tablet(json.dumps({'table': 'table_shard', 'tablet': 'localhost:8082'}))
+
+
+# 跟shard_server说，更新table rows，更新table columns， 更新table info，更新table list
+def update_shard_request(table_name, shard_row_key_set, tablet_server_name):
+    table_rows = {table_name: shard_row_key_set}
+    table_columns = {table_name: tables_columns[table_name]}
+    table_info = {table_name: tables_info[table_name]}
+    jsonvalue = {"table": table_name, "table_rows": table_rows, "table_columns": table_columns,
+                 "table_info": table_info}
+    url = "http://" + tablet_server_name + "/api/update_shard"
+    requests.post(url, json.dumps(jsonvalue))
+
+
+# 更新shard的信息（如果此server是被写入的server）
+def update_shard_server(jsonvalue):
+    table_name = jsonvalue["table"]
+    table_rows = jsonvalue["table_rows"]
+    table_columns = jsonvalue["table_columns"]
+    table_info = jsonvalue["table_info"]
+    # update table_list
+    if table_name not in table_list["tables"]:
+        table_list["tables"].append(table_name)
+    # update table rows
+    tables_rows[table_name] = []
+    for row_key in table_rows[table_name]:
+        metadata_for_row_index(table_name, row_key)
+        tables_rows[table_name].append(row_key)
+    # update table columns
+    tables_columns[table_name] = table_columns[table_name]
+    columns_json = {"name": table_name, "column_families": []}
+    for column in tables_columns[table_name]:
+        jsonitem = {"column_family_key": column, "columns": []}
+        for column_key in tables_columns[table_name][column]:
+            jsonitem["columns"].append(column_key)
+        columns_json["column_families"].append(jsonitem)
+    metadata_for_col_index(columns_json)
+    # update table info
+    tables_info[table_name] = table_info[table_name]
+
+
+# 跟master说shard好了，并让master更新row key
+def shard_finish_request(table_name, tablet_server_name, row_from_pre, row_to_pre, row_from_post, row_to_post):
+    url = "http://" + MASTER_SERVER_NAME + "/api/shard_finish"
+    jsonvalue = {"table": table_name,
+                 "data": [{"hostname": TABLET_SERVER_NAME.split(":")[0], "port": TABLET_SERVER_NAME.split(":")[1],
+                           "row_from": row_from_pre, "row_to": row_to_pre},
+                          {"hostname": tablet_server_name.split(":")[0],
+                           "port": tablet_server_name.split(":")[1], "row_from": row_from_post, "row_to": row_to_post}]}
+    requests.post(url, json.dumps(jsonvalue))
+
+
 def check_tables():
-    print("============= Table Rows ===============")
-    print(tables_rows)
-    print("============= Table Columns ===============")
-    print(tables_columns)
-    print("============= Table Info ===============")
-    print(tables_info)
-    print("============= Table list ===============")
-    print(table_list)
-    print("============= Memtables ===============")
-    print(memtables)
+    pass
+
+
+# def check_tables():
+#     print("============= Table Rows ===============")
+#     print(tables_rows)
+#     print("============= Table Columns ===============")
+#     print(tables_columns)
+#     print("============= Table Info ===============")
+#     print(tables_info)
+#     print("============= Table list ===============")
+#     print(table_list)
+#     print("============= Memtables ===============")
+#     print(memtables)
+
+# shard到另一个server
+def shard_to_other_tablet(data, shard_row, original_row):
+    json_value = json.loads(data)
+    # shard_to_other_tablet(json_value["tablet"], json_value["table"])
+    tablet_server_name = json_value["tablet"]
+    table_name = json_value["table"]
+    print("开始shard了！")
+    pre_list = []
+    post_list = []
+    origin_row_key_set = set()
+
+    # 先把memtable里的row key算上
+    if table_name in memtables:
+        for row_key in memtables[table_name]:
+            origin_row_key_set.add(row_key)
+
+    with open(TABLET_SERVER_NAME + "/" + DISK_PATH + table_name + ".table", "r") as db:
+        line = db.readline()
+        while line:
+            jsonitem = json.loads(line)
+            pre_dict = {}
+            post_dict = {}
+            for row_key in jsonitem:
+                if row_key in original_row:
+                    pre_dict[row_key] = jsonitem[row_key]
+                    origin_row_key_set.add(row_key)
+                if row_key in shard_row:
+                    post_dict[row_key] = jsonitem[row_key]
+            if len(pre_dict) > 0:
+                pre_list.append(json.dumps(pre_dict))
+            if len(post_dict) > 0:
+                post_list.append(json.dumps(post_dict))
+            line = db.readline()
+
+    with open(TABLET_SERVER_NAME + "/" + DISK_PATH + table_name + ".table", "w") as this_db:
+        for data in pre_list:
+            this_db.write(data + "\n")
+
+    with open(tablet_server_name + "/" + DISK_PATH + table_name + ".table", "w") as shard_db:
+        for data in post_list:
+            shard_db.write(data + "\n")
+
+    origin_row_key_set = sorted(list(origin_row_key_set))
+
+    # update table rows
+    tables_rows[table_name] = origin_row_key_set
+
+    # 重新更新 row meta
+    metadata_for_row_index_shard()
+
+    # update shard server
+    update_shard_request(table_name, shard_row, tablet_server_name)
+
+    # update master server
+    shard_finish_request(table_name, tablet_server_name, origin_row_key_set[0],
+                         origin_row_key_set[len(origin_row_key_set) - 1],
+                         shard_row[0], shard_row[len(shard_row) - 1])
 
 
 def update_row_key_to_master():
@@ -77,6 +209,13 @@ def get_disk_json(table_name):
 def metadata_for_row_index(table_name, row_key):
     with open(TABLET_SERVER_NAME + "/" + META_PATH + ROW_META_FILE_NAME, "a") as meta:
         meta.write(str(table_name) + "*" + str(row_key) + "\n")
+
+
+def metadata_for_row_index_shard():
+    with open(TABLET_SERVER_NAME + "/" + META_PATH + ROW_META_FILE_NAME, "w") as meta:
+        for table in tables_rows:
+            for row_key in tables_rows[table]:
+                meta.write(str(table) + "*" + str(row_key) + "\n")
 
 
 def metadata_for_col_index(json_value):
@@ -199,6 +338,7 @@ def create_table(input):
 
         # For num_row_key
         num_row_keys[table_name] = 0
+        # num_row_keys_shard[table_name] = set()
 
         # put new column families and columns into column in-memory index
         for column_family in input.get("column_families"):
@@ -291,6 +431,7 @@ class MyHandler(BaseHTTPRequestHandler):
                             # If this is a new row key, write it in metadata
                             metadata_for_row_index(table_name, row)
                             update_row_key_to_master()
+                            check_shard_request()
 
                         write_ahead_log(2, table_name, dict)
                         spill_to_the_disk()
@@ -298,6 +439,7 @@ class MyHandler(BaseHTTPRequestHandler):
                         return
             else:
                 self._set_response(400)
+                return
 
     def find_in_disk(self, table_name, cell_dic, row_value, col_key):
         for file in os.listdir(TABLET_SERVER_NAME + "/" + DISK_PATH):
@@ -474,8 +616,26 @@ class MyHandler(BaseHTTPRequestHandler):
                         spill_to_the_disk()
                         metadata_for_max_size(str(new_size))
                         self._set_response(200)
+                        return
                     except:
                         self._set_response(400)
+                        return
+
+                # update shard
+                elif path_1 == 'update_shard':
+                    json_value = json.loads(data)
+                    update_shard_server(json_value)
+                    self._set_response(200)
+                    return
+
+                # allocate shard server
+                elif path_1 == 'allocate':
+                    # json_value = json.loads(data)
+                    # print(json_value)
+                    # t1 = Thread(target=self.shard_to_other_tablet, args=(data,))
+                    # t1.start()
+                    # # shard_to_other_tablet(json_value["tablet"], json_value["table"])
+                    return
                 check_tables()
 
     def do_DELETE(self):
@@ -516,6 +676,7 @@ class MyHandler(BaseHTTPRequestHandler):
 def join_master(host_name, host_port, master_host_name, master_host_port):
     data = {"host_name": host_name, "host_port": host_port}
     url = "http://" + master_host_name + ":" + str(master_host_port) + "/api/join"
+    print(url)
     requests.post(url, json=data)
 
 

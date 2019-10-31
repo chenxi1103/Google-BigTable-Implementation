@@ -26,6 +26,17 @@ def print_info():
     print("================ locked_table =================")
     print(lock_tables)
 
+def deal_with_shard_request(jsonvalue):
+    tablet_server = jsonvalue["tablet"]
+    table_name = jsonvalue["table"]
+    for tablet in tablet_dict:
+        if table_name not in tablet_dict[tablet]:
+            jsondata = {"table": table_name, "tablet": tablet}
+            print(jsondata)
+            url = "http://" + tablet_server + "/api/allocate"
+            print(url)
+            response = requests.post(url, json.dumps(jsondata))
+            print(response.status_code)
 
 def check_json(input):
     try:
@@ -33,6 +44,24 @@ def check_json(input):
         return True
     except:
         return False
+
+def update_shard_row(jsonvalue):
+    table_name = jsonvalue["table"]
+    data = jsonvalue["data"]
+    pre_data = data[0]
+    post_data = data[1]
+
+    for tablet in tables_info[table_name]['tablets']:
+        if pre_data["hostname"] == tablet["hostname"] and pre_data["port"] == tablet["port"]:
+            tablet["row_from"] = pre_data["row_from"]
+            tablet["row_to"] = pre_data["row_to"]
+            break
+
+    tables_info[table_name]["tablets"].append({"hostname": post_data["hostname"], "port": post_data["port"],
+                                               "row_from": post_data["row_from"], "row_to": post_data["row_to"]})
+
+    tablet_server = post_data["hostname"] + ":" + post_data["port"]
+    tablet_dict[tablet_server].append(table_name)
 
 
 def update_table_info(jsonvalue):
@@ -46,7 +75,6 @@ def update_table_info(jsonvalue):
                 if len(data[table_name]) != 0:
                     tablet_item["row_from"] = data[table_name][0]
                     tablet_item["row_to"] = data[table_name][len(data[table_name]) - 1]
-                    break
 
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -211,6 +239,7 @@ class MyHandler(BaseHTTPRequestHandler):
                     tablet_path = tablet_host + ":" + str(tablet_port)
                     tablet_dict[tablet_path] = []
                     tablet_list.append(tablet_path)
+                    self._set_response(200)
                 # create a table
                 elif path_1 == 'tables':
                     if not check_json(data):
@@ -225,6 +254,7 @@ class MyHandler(BaseHTTPRequestHandler):
                     json_value = json.loads(data)
                     update_table_info(json_value)
                     self._set_response(200)
+                    return
 
                 # lock a table
                 elif path_1 == 'lock':
@@ -233,9 +263,21 @@ class MyHandler(BaseHTTPRequestHandler):
                     client = json_value["client_id"]
                     self.lock_table(table_name, client)
 
-                print_info()
+                # handle shard request
+                elif path_1 == 'shard_request':
+                    json_value = json.loads(data)
+                    deal_with_shard_request(json_value)
+                    self._set_response(200)
+                    print("成功了")
 
-        self._set_response(200)
+                # update shard row key
+                elif path_1 == 'shard_finish':
+                    json_value = json.loads(data)
+                    update_shard_row(json_value)
+                    self._set_response(200)
+                    return
+
+                print_info()
 
     def do_DELETE(self):
         content_length = self.headers['content-length']
