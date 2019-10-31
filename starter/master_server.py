@@ -28,6 +28,13 @@ lock_tables = {}
 
 
 def transfer_table(dead_tablet, tablet, old_tables):
+    """
+    Transfer old tables in killed tablet and tranfer to another tablet to take
+    :param dead_tablet: str---hostname:port
+    :param tablet: str --- hostname:port
+    :param old_tables: list
+    :return: null
+    """
     for table in old_tables:
         if table in tables_info:
             tablet_lst = tables_info[table]['tablets']
@@ -42,6 +49,11 @@ def transfer_table(dead_tablet, tablet, old_tables):
 
 
 def recover(dead_tablet):
+    """
+    Implement recover manipulation and select another tablet to take it
+    :param dead_tablet: str
+    :return: None
+    """
     for tablet in tablet_dict:
         if tablet != dead_tablet:
             recover_url = "http://" + tablet + "/api/read/" + dead_tablet
@@ -125,6 +137,10 @@ def update_table_info(jsonvalue):
                         tablet_item["row_to"] = data[table_name][len(data[table_name]) - 1]
 
 def run():
+    """
+    Heartbeat testing. It would run forwever. The interval is 10 seconds
+    :return: None
+    """
     while True:
         for tablet in list(tablet_dict.keys()):
             try:
