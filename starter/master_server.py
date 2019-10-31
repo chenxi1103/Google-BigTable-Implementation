@@ -6,6 +6,7 @@ import requests
 import json
 import sys
 import collections
+from threading import Thread
 
 tablet_dict = {}
 tablet_list = []
@@ -31,12 +32,13 @@ def deal_with_shard_request(jsonvalue):
     table_name = jsonvalue["table"]
     for tablet in tablet_dict:
         if table_name not in tablet_dict[tablet]:
-            jsondata = {"table": table_name, "tablet": tablet}
+            jsondata = {"table": table_name, "tablet": tablet, "shard_row": jsonvalue["shard_row"], "original_row": jsonvalue["original_row"]}
             print(jsondata)
-            url = "http://" + tablet_server + "/api/allocate"
+            url = "http://" + tablet_server + "/api/tablet/allocate"
             print(url)
-            response = requests.post(url, json.dumps(jsondata))
-            print(response.status_code)
+            t = Thread(target = requests.post, args=(url, json.dumps(jsondata)))
+            t.start()
+            return
 
 def check_json(input):
     try:

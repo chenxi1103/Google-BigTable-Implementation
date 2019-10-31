@@ -56,12 +56,11 @@ def check_shard_request():
             rowkeys = sorted(tables_rows[table_name])
             shard_row = rowkeys[:shard_max_size // 2 + 1]
             original_row = rowkeys[shard_max_size // 2:]
+            jsonvalue = {"tablet" : TABLET_SERVER_NAME, "table" : table_name, "shard_row": shard_row, "original_row": original_row}
+            requests.post(url, json.dumps(jsonvalue))
 
-            # jsonvalue = {"tablet" : TABLET_SERVER_NAME, "table" : table_name}
-            # requests.post(url, json.dumps(jsonvalue))
-
-            t1 = Thread(target=shard_to_other_tablet, args=(json.dumps({'table': 'table_shard', 'tablet': 'localhost:8082'}),shard_row, original_row))
-            t1.start()
+            # t1 = Thread(target=shard_to_other_tablet, args=(json.dumps({'table': 'table_shard', 'tablet': 'localhost:8082'}),shard_row, original_row))
+            # t1.start()
             # shard_to_other_tablet(json.dumps({'table': 'table_shard', 'tablet': 'localhost:8082'}))
 
 
@@ -131,11 +130,13 @@ def check_tables():
 #     print(memtables)
 
 # shard到另一个server
-def shard_to_other_tablet(data, shard_row, original_row):
+def shard_to_other_tablet(data):
     json_value = json.loads(data)
     # shard_to_other_tablet(json_value["tablet"], json_value["table"])
     tablet_server_name = json_value["tablet"]
     table_name = json_value["table"]
+    shard_row = json_value["shard_row"]
+    original_row = json_value["original_row"]
     print("开始shard了！")
     pre_list = []
     post_list = []
@@ -629,12 +630,11 @@ class MyHandler(BaseHTTPRequestHandler):
                     return
 
                 # allocate shard server
-                elif path_1 == 'allocate':
-                    # json_value = json.loads(data)
-                    # print(json_value)
-                    # t1 = Thread(target=self.shard_to_other_tablet, args=(data,))
-                    # t1.start()
-                    # # shard_to_other_tablet(json_value["tablet"], json_value["table"])
+                elif path_1 == 'tablet':
+                    self._set_response(200)
+                    t = Thread(target=shard_to_other_tablet, args = (data,))
+                    t.start()
+                    # shard_to_other_tablet(json_value["tablet"], json_value["table"])
                     return
                 check_tables()
 
@@ -705,6 +705,7 @@ if __name__ == "__main__":
         handler_class.recover_from_log(handler_class)
         recover_from_max_size_meta()
         join_master(host_name, host_port, master_host_name, master_host_port)
+
         httpd.serve_forever()
     except KeyboardInterrupt:
         pass
