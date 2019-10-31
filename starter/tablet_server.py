@@ -5,6 +5,8 @@ import collections
 import os
 import sys
 import heapq
+from shutil import copyfile
+from threading import Thread
 
 # In-memory Memtable
 memtables = {}
@@ -20,6 +22,9 @@ table_list = {"tables": []}
 # Memtable Max size
 global tables_max_size
 tables_max_size = 100
+
+global shard_max_size
+shard_max_size = 1000
 
 # In-memory number of row key
 # global num_row_key
@@ -43,56 +48,217 @@ COL_META_FILE_NAME = "col.meta"
 WAL_LOG_FILE_NAME = ".log"
 MEMTABLE_SIZE_FILE_NAME = "memtable_max_size.meta"
 
+############################### Shard Logic Method #################################
+def check_shard_request():
+    url = "http://" + MASTER_SERVER_NAME + "/api/shard_request"
+    for table_name in tables_rows:
+        if len(tables_rows[table_name]) >= shard_max_size:
+            rowkeys = sorted(tables_rows[table_name])
+            shard_row = rowkeys[:shard_max_size // 2 + 1]
+            original_row = rowkeys[shard_max_size // 2:]
+            jsonvalue = {"tablet": TABLET_SERVER_NAME, "table": table_name, "shard_row": shard_row,
+                         "original_row": original_row}
+            requests.post(url, json.dumps(jsonvalue))
 
-def check_tables():
-    print("============= Table Rows ===============")
-    print(tables_rows)
-    print("============= Table Columns ===============")
-    print(tables_columns)
-    print("============= Table Info ===============")
-    print(tables_info)
-    print("============= Table list ===============")
-    print(table_list)
-    print("============= Memtables ===============")
-    print(memtables)
 
-
-def update_row_key_to_master():
-    url = "http://" + MASTER_SERVER_NAME + "/api/update_rowkey"
-    jsonvalue = {"tablet": TABLET_SERVER_NAME, "data": tables_rows}
+def update_shard_request(table_name, shard_row_key_set, tablet_server_name):
+    """
+    This method is used to notify the shard server to update:
+    1. tables_rows
+    2. tables_columns
+    3. tables_info
+    4. table_list
+    :param table_name: shard table's name
+    :param shard_row_key_set: shard table's row_key list (sorted)
+    :param tablet_server_name: shard tablet's server name (hostname:port)
+    :return: void
+    """
+    table_rows = {table_name: shard_row_key_set}
+    table_columns = {table_name: tables_columns[table_name]}
+    table_info = {table_name: tables_info[table_name]}
+    jsonvalue = {"table": table_name, "table_rows": table_rows, "table_columns": table_columns,
+                 "table_info": table_info}
+    url = "http://" + tablet_server_name + "/api/update_shard"
     requests.post(url, json.dumps(jsonvalue))
 
 
-def get_disk_json(table_name):
-    list = []
+def update_shard_server(jsonvalue):
+    """
+    If current server is the shard server, the method would parse input json to update the corresponding:
+    1. tables_rows
+    2. tables_columns
+    3. tables_info
+    4. table_list
+    :param jsonvalue: a json format input data contains information of tables_rows/tables_columns/tables_info/table_list
+    :return: void
+    """
+    table_name = jsonvalue["table"]
+    table_rows = jsonvalue["table_rows"]
+    table_columns = jsonvalue["table_columns"]
+    table_info = jsonvalue["table_info"]
+    # update table_list
+    if table_name not in table_list["tables"]:
+        table_list["tables"].append(table_name)
+    # update table rows
+    tables_rows[table_name] = []
+    for row_key in table_rows[table_name]:
+        metadata_for_row_index(table_name, row_key)
+        tables_rows[table_name].append(row_key)
+    # update table columns
+    tables_columns[table_name] = table_columns[table_name]
+    columns_json = {"name": table_name, "column_families": []}
+    for column in tables_columns[table_name]:
+        jsonitem = {"column_family_key": column, "columns": []}
+        for column_key in tables_columns[table_name][column]:
+            jsonitem["columns"].append(column_key)
+        columns_json["column_families"].append(jsonitem)
+    metadata_for_col_index(columns_json)
+    # update table info
+    tables_info[table_name] = table_info[table_name]
+
+
+def shard_finish_request(table_name, tablet_server_name, row_from_pre, row_to_pre, row_from_post, row_to_post):
+    """
+    After finishing sharding job, notify Master server to update "tables_info"
+    :param table_name: sharding table's name
+    :param tablet_server_name: shard tablet server name
+    :param row_from_pre: current tablet server's table row_from
+    :param row_to_pre: current tablet server's table row_to
+    :param row_from_post: shard tablet server's table row_from
+    :param row_to_post: shard tablet server's table row_to
+    :return: void
+    """
+    url = "http://" + MASTER_SERVER_NAME + "/api/shard_finish"
+    jsonvalue = {"table": table_name,
+                 "data": [{"hostname": TABLET_SERVER_NAME.split(":")[0], "port": TABLET_SERVER_NAME.split(":")[1],
+                           "row_from": row_from_pre, "row_to": row_to_pre},
+                          {"hostname": tablet_server_name.split(":")[0],
+                           "port": tablet_server_name.split(":")[1], "row_from": row_from_post, "row_to": row_to_post}]}
+    requests.post(url, json.dumps(jsonvalue))
+
+
+def shard_to_other_tablet(data):
+    """
+    Shard data to another tablet server
+    :param data: Get input from Master server. Input data contains the shard server's server name
+    :return: void
+    """
+    json_value = json.loads(data)
+    tablet_server_name = json_value["tablet"]
+    table_name = json_value["table"]
+    shard_row = json_value["shard_row"]
+    original_row = json_value["original_row"]
+    pre_list = []
+    post_list = []
+    origin_row_key_set = set()
+
+    # Count memtable's row_key first
+    if table_name in memtables:
+        for row_key in memtables[table_name]:
+            origin_row_key_set.add(row_key)
+
     with open(TABLET_SERVER_NAME + "/" + DISK_PATH + table_name + ".table", "r") as db:
         line = db.readline()
         while line:
-            list.append(json.loads(line))
+            jsonitem = json.loads(line)
+            pre_dict = {}
+            post_dict = {}
+            for row_key in jsonitem:
+                if row_key in original_row:
+                    pre_dict[row_key] = jsonitem[row_key]
+                    origin_row_key_set.add(row_key)
+                if row_key in shard_row:
+                    post_dict[row_key] = jsonitem[row_key]
+            if len(pre_dict) > 0:
+                pre_list.append(json.dumps(pre_dict))
+            if len(post_dict) > 0:
+                post_list.append(json.dumps(post_dict))
             line = db.readline()
-    list.reverse()
-    return list
 
+    with open(TABLET_SERVER_NAME + "/" + DISK_PATH + table_name + ".table", "w") as this_db:
+        for data in pre_list:
+            this_db.write(data + "\n")
+
+    with open(tablet_server_name + "/" + DISK_PATH + table_name + ".table", "w") as shard_db:
+        for data in post_list:
+            shard_db.write(data + "\n")
+
+    origin_row_key_set = sorted(list(origin_row_key_set))
+
+    # update table rows
+    tables_rows[table_name] = origin_row_key_set
+
+    # update row meta
+    metadata_for_row_index_shard()
+
+    # update shard server
+    update_shard_request(table_name, shard_row, tablet_server_name)
+
+    # update master server
+    shard_finish_request(table_name, tablet_server_name, origin_row_key_set[0],
+                         origin_row_key_set[len(origin_row_key_set) - 1],
+                         shard_row[0], shard_row[len(shard_row) - 1])
+
+
+############################### Recover Logic Method / Log / MetaData #################################
+def recover_disk(dead_tablet, take_tablet):
+    """
+    Recover disk data from dead tablet to take_over tablet
+    :param dead_tablet: dead tablet server name
+    :param take_tablet: take_over tablet server name
+    :return: void
+    """
+    f_list = os.listdir(dead_tablet + "/" + DISK_PATH)
+    for file in f_list:
+        copyfile(dead_tablet + "/" + DISK_PATH + "/" + file, take_tablet + "/" + DISK_PATH + "/" + file)
 
 def metadata_for_row_index(table_name, row_key):
+    """
+    Log metadata for adding new row key
+    :param table_name: table name
+    :param row_key: row key
+    :return: void
+    """
     with open(TABLET_SERVER_NAME + "/" + META_PATH + ROW_META_FILE_NAME, "a") as meta:
         meta.write(str(table_name) + "*" + str(row_key) + "\n")
 
 
+def metadata_for_row_index_shard():
+    """
+    Log metadata for new row keys set after sharding
+    :return: void
+    """
+    with open(TABLET_SERVER_NAME + "/" + META_PATH + ROW_META_FILE_NAME, "w") as meta:
+        for table in tables_rows:
+            for row_key in tables_rows[table]:
+                meta.write(str(table) + "*" + str(row_key) + "\n")
+
+
 def metadata_for_col_index(json_value):
+    """
+    Log metadata for adding new col index
+    :param json_value: column family/ column keys info
+    :return: void
+    """
     with open(TABLET_SERVER_NAME + "/" + META_PATH + COL_META_FILE_NAME, "a") as meta:
         meta.write(json.dumps(json_value) + "\n")
 
 
 def metadata_for_max_size(size):
+    """
+    Log metadata for changing max memtable size
+    :param size: max memtable size
+    :return: void
+    """
     f = open(TABLET_SERVER_NAME + "/" + META_PATH + MEMTABLE_SIZE_FILE_NAME, 'r+')
     f.truncate()
     f.write(size)
 
 
-def recover_from_max_size_meta():
+def recover_from_max_size_meta(tablet_server_name):
+    # Recover max memtable size
     try:
-        with open(TABLET_SERVER_NAME + "/" + META_PATH + MEMTABLE_SIZE_FILE_NAME, 'r') as max_size_meta:
+        with open(tablet_server_name + "/" + META_PATH + MEMTABLE_SIZE_FILE_NAME, 'r') as max_size_meta:
             line = max_size_meta.readline()
             if len(line) > 0:
                 global tables_max_size
@@ -100,15 +266,15 @@ def recover_from_max_size_meta():
                 tables_max_size = new_size
                 spill_to_the_disk()
     except IOError:
-        if not os.path.exists(TABLET_SERVER_NAME + "/" + META_PATH):
-            os.mkdir(TABLET_SERVER_NAME + "/" + META_PATH)
-        open(TABLET_SERVER_NAME + "/" + META_PATH + MEMTABLE_SIZE_FILE_NAME, 'w').close()
+        if not os.path.exists(tablet_server_name + "/" + META_PATH):
+            os.mkdir(tablet_server_name + "/" + META_PATH)
+        open(tablet_server_name + "/" + META_PATH + MEMTABLE_SIZE_FILE_NAME, 'w').close()
 
 
-def recover_from_row_meta():
+def recover_from_row_meta(tablet_server_name):
     # Recover tables_rows
     try:
-        with open(TABLET_SERVER_NAME + "/" + META_PATH + ROW_META_FILE_NAME, "r") as row_meta:
+        with open(tablet_server_name + "/" + META_PATH + ROW_META_FILE_NAME, "r") as row_meta:
             line = row_meta.readline()
             while line:
                 table_name = line.split("*")[0]
@@ -124,15 +290,15 @@ def recover_from_row_meta():
         update_row_key_to_master()
 
     except IOError:
-        if not os.path.exists(TABLET_SERVER_NAME + "/" + META_PATH):
-            os.mkdir(TABLET_SERVER_NAME + "/" + META_PATH)
-        open(TABLET_SERVER_NAME + "/" + META_PATH + ROW_META_FILE_NAME, 'w').close()
+        if not os.path.exists(tablet_server_name + "/" + META_PATH):
+            os.mkdir(tablet_server_name + "/" + META_PATH)
+        open(tablet_server_name + "/" + META_PATH + ROW_META_FILE_NAME, 'w').close()
 
 
-def recover_from_col_meta():
+def recover_from_col_meta(tablet_server_name):
     # Recover table_columns and table info
     try:
-        with open(TABLET_SERVER_NAME + "/" + META_PATH + COL_META_FILE_NAME, "r") as col_meta:
+        with open(tablet_server_name + "/" + META_PATH + COL_META_FILE_NAME, "r") as col_meta:
             line = col_meta.readline()
             while len(line) > 1:
                 json_value = json.loads(line)
@@ -147,12 +313,19 @@ def recover_from_col_meta():
                     tables_info[table_name] = json_value
                 line = col_meta.readline()
     except IOError:
-        if not os.path.exists(TABLET_SERVER_NAME + "/" + META_PATH):
-            os.mkdir(TABLET_SERVER_NAME + "/" + META_PATH)
-        open(TABLET_SERVER_NAME + "/" + META_PATH + COL_META_FILE_NAME, 'w').close()
+        if not os.path.exists(tablet_server_name + "/" + META_PATH):
+            os.mkdir(tablet_server_name + "/" + META_PATH)
+        open(tablet_server_name + "/" + META_PATH + COL_META_FILE_NAME, 'w').close()
 
 
 def write_ahead_log(operation, table, content):
+    """
+    Write ahead log mechanism
+    :param operation: 1 for "create table", 2 for "insert a cell", 3 for "set max memtable size", 4 for "destroy table"
+    :param table: table name
+    :param content: json information for that operation
+    :return: void
+    """
     try:
         with open(TABLET_SERVER_NAME + "/" + WAL_PATH + table + WAL_LOG_FILE_NAME, "a") as log:
             log.write(str(operation) + "*" + table + "*" + json.dumps(content) + "\n")
@@ -161,7 +334,13 @@ def write_ahead_log(operation, table, content):
             log.write(str(operation) + "*" + table + "*" + json.dumps(content) + "\n")
 
 
+############################### Spill to disk Logic Method #################################
 def spill_to_the_disk():
+    """
+    Check if any table's #row_key exceeds max memtable size. If so, spill them to disk and clean
+    the corresponding memtable
+    :return: void
+    """
     for table in num_row_keys:
         if num_row_keys[table] >= tables_max_size:
             try:
@@ -181,10 +360,12 @@ def spill_to_the_disk():
 
 
 def clean_memtables(table_name):
+    # clean the corresponding memtable after spilling
     del memtables[table_name]
     num_row_keys[table_name] = 0
 
 
+############################### Other Methods #################################
 def create_table(input):
     table_name = input.get("name")
     if table_name in table_list.get("tables"):
@@ -199,6 +380,7 @@ def create_table(input):
 
         # For num_row_key
         num_row_keys[table_name] = 0
+        # num_row_keys_shard[table_name] = set()
 
         # put new column families and columns into column in-memory index
         for column_family in input.get("column_families"):
@@ -215,6 +397,25 @@ def check_json(input):
     except:
         return False
 
+def update_row_key_to_master():
+    """
+    Everytime the row_key from and to changes, notify the Master server to update
+    :return: void
+    """
+    url = "http://" + MASTER_SERVER_NAME + "/api/update_rowkey"
+    jsonvalue = {"tablet": TABLET_SERVER_NAME, "data": tables_rows}
+    requests.post(url, json.dumps(jsonvalue))
+
+
+def get_disk_json(table_name):
+    list = []
+    with open(TABLET_SERVER_NAME + "/" + DISK_PATH + table_name + ".table", "r") as db:
+        line = db.readline()
+        while line:
+            list.append(json.loads(line))
+            line = db.readline()
+    list.reverse()
+    return list
 
 class MyHandler(BaseHTTPRequestHandler):
     def _set_response(self, code):
@@ -222,13 +423,18 @@ class MyHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'application/json')
         self.end_headers()
 
-    def recover_from_log(self):
+    def recover_from_log(self, tablet_server_name):
+        """
+        Recover the server state by reading write_ahead_log
+        :param tablet_server_name: tablet server's name
+        :return: void
+        """
         try:
-            f_list = os.listdir(TABLET_SERVER_NAME + "/" + WAL_PATH)
+            f_list = os.listdir(tablet_server_name + "/" + WAL_PATH)
             for file in f_list:
                 if os.path.splitext(file)[1] == '.log':
                     table = os.path.splitext(file)[0]
-                    with open(TABLET_SERVER_NAME + "/" + WAL_PATH + table + WAL_LOG_FILE_NAME, "r") as log:
+                    with open(tablet_server_name + "/" + WAL_PATH + table + WAL_LOG_FILE_NAME, "r") as log:
                         line = log.readline()
                         while line:
                             opertaion = line.split("*")[0]
@@ -248,7 +454,7 @@ class MyHandler(BaseHTTPRequestHandler):
                                 spill_to_the_disk()
                             line = log.readline()
         except IOError:
-            os.makedirs(TABLET_SERVER_NAME + "/" + WAL_PATH)
+            os.makedirs(tablet_server_name + "/" + WAL_PATH)
 
     def insert_cell(self, input, table_name):
         if table_name not in table_list["tables"]:
@@ -271,6 +477,8 @@ class MyHandler(BaseHTTPRequestHandler):
                             memtables[table_name] = {}
                         if row not in memtables[table_name]:
                             memtables[table_name][row] = {}
+                            if table_name not in num_row_keys:
+                                num_row_keys[table_name] = 0
                             num_row_keys[table_name] += 1
                             # tell master server row key is updated
                         if col_index not in memtables[table_name][row]:
@@ -291,6 +499,7 @@ class MyHandler(BaseHTTPRequestHandler):
                             # If this is a new row key, write it in metadata
                             metadata_for_row_index(table_name, row)
                             update_row_key_to_master()
+                            check_shard_request()
 
                         write_ahead_log(2, table_name, dict)
                         spill_to_the_disk()
@@ -298,6 +507,7 @@ class MyHandler(BaseHTTPRequestHandler):
                         return
             else:
                 self._set_response(400)
+                return
 
     def find_in_disk(self, table_name, cell_dic, row_value, col_key):
         for file in os.listdir(TABLET_SERVER_NAME + "/" + DISK_PATH):
@@ -398,6 +608,14 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(data_json.encode("utf8"))
             return
 
+    def recover_from_other(self, dead_tablet):
+        recover_from_col_meta(dead_tablet)
+        recover_from_row_meta(dead_tablet)
+        recover_from_max_size_meta(dead_tablet)
+        recover_disk(dead_tablet, TABLET_SERVER_NAME)
+        self.recover_from_log(dead_tablet)
+        return
+
     def do_GET(self):
         if self.command == 'GET':
             url = self.path.split('/')[1:]
@@ -432,6 +650,12 @@ class MyHandler(BaseHTTPRequestHandler):
             elif url[0] == 'api' and url[1] == 'table' and url[-1] == 'row':
                 table_name = url[2]
                 self.retrieve_a_row(table_name)
+            elif url[0] == 'api' and url[1] == 'heart':
+                self._set_response(200)
+                return
+            else:
+                self._set_response(404)
+                return
 
     def do_POST(self):
         data = None
@@ -474,9 +698,29 @@ class MyHandler(BaseHTTPRequestHandler):
                         spill_to_the_disk()
                         metadata_for_max_size(str(new_size))
                         self._set_response(200)
+                        return
                     except:
                         self._set_response(400)
-                check_tables()
+                        return
+
+                # update shard
+                elif path_1 == 'update_shard':
+                    json_value = json.loads(data)
+                    update_shard_server(json_value)
+                    self._set_response(200)
+                    return
+
+                # allocate shard server
+                elif path_1 == 'tablet':
+                    self._set_response(200)
+                    t = Thread(target=shard_to_other_tablet, args=(data,))
+                    t.start()
+                    # shard_to_other_tablet(json_value["tablet"], json_value["table"])
+                    return
+                elif path_1 == 'read' and len(request_path.split("/")) > 3:
+                    dead_tablet = request_path.split("/")[3]
+                    self.recover_from_other(dead_tablet)
+                    self._set_response(200)
 
     def do_DELETE(self):
         content_length = self.headers['content-length']
@@ -510,7 +754,6 @@ class MyHandler(BaseHTTPRequestHandler):
 
                         write_ahead_log(4, table_name, "")
                         self._set_response(200)
-                check_tables()
 
 
 def join_master(host_name, host_port, master_host_name, master_host_port):
@@ -539,10 +782,10 @@ if __name__ == "__main__":
             os.mkdir(TABLET_SERVER_NAME)
         if not os.path.exists(TABLET_SERVER_NAME + "/" + DISK_PATH):
             os.mkdir(TABLET_SERVER_NAME + "/" + DISK_PATH)
-        recover_from_col_meta()
-        recover_from_row_meta()
-        handler_class.recover_from_log(handler_class)
-        recover_from_max_size_meta()
+        recover_from_col_meta(TABLET_SERVER_NAME)
+        recover_from_row_meta(TABLET_SERVER_NAME)
+        handler_class.recover_from_log(handler_class, TABLET_SERVER_NAME)
+        recover_from_max_size_meta(TABLET_SERVER_NAME)
         join_master(host_name, host_port, master_host_name, master_host_port)
         httpd.serve_forever()
     except KeyboardInterrupt:

@@ -5,27 +5,71 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import requests
 import json
 import sys
-import collections
+import time
+from threading import Thread
 
+# tablet_dict {"tablet_name":[table_name]}
 tablet_dict = {}
+
+# tablet_list ["tablet1", "tablet2"]
 tablet_list = []
+
+# table_list = {"tables": [table1, table2]}
 table_list = {"tables": []}
+
+# tables_info = {"table1": {"name": "table1", "tablets": [{'hostname': 'localhost', 'port': '8081', 'row_from': '', 'row_to': ''}]}}
 tables_info = {}
+
 global tablet_index
 tablet_index = 0
+
+# lock_tables = {"client_id":[table1, table2'}
 lock_tables = {}
 
 
-def print_info():
-    print("================ tablet_dict =================")
-    print(tablet_dict)
-    print("================ table_list =================")
-    print(table_list)
-    print("================ table_info =================")
-    print(tables_info)
-    print("================ locked_table =================")
-    print(lock_tables)
+def transfer_table(dead_tablet, tablet, old_tables):
+    for table in old_tables:
+        if table in tables_info:
+            tablet_lst = tables_info[table]['tablets']
+            for server in tablet_lst:
+                host = server['hostname']
+                port = server['port']
+                host_port = host + ":" + port
+                if host_port == dead_tablet:
+                    # tablet_lst.remove(server)
+                    server['hostname'] = tablet.split(":")[0]
+                    server['port'] = tablet.split(":")[1]
 
+
+def recover(dead_tablet):
+    for tablet in tablet_dict:
+        if tablet != dead_tablet:
+            recover_url = "http://" + tablet + "/api/read/" + dead_tablet
+            t1 = Thread(target=requests.post, args=(recover_url, json.dumps({"something": "something"})))
+            t1.start()
+            # response = requests.post(recover_url)
+            if dead_tablet in tablet_dict:
+                tables = tablet_dict.get(dead_tablet)
+                tablet_dict[tablet].extend(tables)
+                # del tablet_dict[dead_tablet]
+                transfer_table(dead_tablet, tablet, tables)
+
+    if dead_tablet in tablet_dict:
+        del tablet_dict[dead_tablet]
+
+    if dead_tablet in tablet_list:
+        tablet_list.remove(dead_tablet)
+
+def deal_with_shard_request(jsonvalue):
+    tablet_server = jsonvalue["tablet"]
+    table_name = jsonvalue["table"]
+    for tablet in tablet_dict:
+        if table_name not in tablet_dict[tablet]:
+            jsondata = {"table": table_name, "tablet": tablet, "shard_row": jsonvalue["shard_row"], "original_row": jsonvalue["original_row"]}
+            url = "http://" + tablet_server + "/api/tablet/allocate"
+            t = Thread(target = requests.post, args=(url, json.dumps(jsondata)))
+            t.start()
+            return
 
 def check_json(input):
     try:
@@ -34,20 +78,61 @@ def check_json(input):
     except:
         return False
 
+def update_shard_row(jsonvalue):
+    """
+    update tables_info after sharding
+    """
+    table_name = jsonvalue["table"]
+    data = jsonvalue["data"]
+    pre_data = data[0]
+    post_data = data[1]
+
+    for tablet in tables_info[table_name]['tablets']:
+        if pre_data["hostname"] == tablet["hostname"] and pre_data["port"] == tablet["port"]:
+            tablet["row_from"] = pre_data["row_from"]
+            tablet["row_to"] = pre_data["row_to"]
+            break
+
+    tables_info[table_name]["tablets"].append({"hostname": post_data["hostname"], "port": post_data["port"],
+                                               "row_from": post_data["row_from"], "row_to": post_data["row_to"]})
+
+    tablet_server = post_data["hostname"] + ":" + post_data["port"]
+    tablet_dict[tablet_server].append(table_name)
+
 
 def update_table_info(jsonvalue):
+    """
+    After inserting a cell, the Master should update the row_from row_to if needed.
+    """
     tablet = jsonvalue["tablet"]
     data = jsonvalue["data"]
     for table_name in data:
-        tablets = tables_info[table_name]['tablets']
-        for tablet_item in tablets:
-            if tablet_item["hostname"] == tablet.split(":")[0] and str(tablet_item["port"]) == str(
-                    tablet.split(":")[1]):
-                if len(data[table_name]) != 0:
-                    tablet_item["row_from"] = data[table_name][0]
-                    tablet_item["row_to"] = data[table_name][len(data[table_name]) - 1]
-                    break
+        if table_name not in tables_info:
+            tables_info[table_name] = {"name": table_name,
+                                       "tablets": [{"hostname": tablet.split(":")[0], "port": str(tablet.split(":")[1]),
+                                                    "row_from": "", "row_to":""}]}
+            if len(data[table_name]) != 0:
+                tables_info[table_name]["tablets"][0]["row_from"] = data[table_name][0]
+                tables_info[table_name]["tablets"][0]["row_to"] = data[table_name][len(data[table_name]) - 1]
 
+        else:
+            tablets = tables_info[table_name]['tablets']
+            for tablet_item in tablets:
+                if tablet_item["hostname"] == tablet.split(":")[0] and str(tablet_item["port"]) == str(
+                        tablet.split(":")[1]):
+                    if len(data[table_name]) != 0:
+                        tablet_item["row_from"] = data[table_name][0]
+                        tablet_item["row_to"] = data[table_name][len(data[table_name]) - 1]
+
+def run():
+    while True:
+        for tablet in list(tablet_dict.keys()):
+            try:
+                url = "http://" + tablet + "/api/heart"
+                requests.get(url)
+            except requests.ConnectionError:
+                recover(tablet)
+        time.sleep(10)
 
 class MyHandler(BaseHTTPRequestHandler):
     def lock_table(self, table_name, client):
@@ -110,7 +195,6 @@ class MyHandler(BaseHTTPRequestHandler):
                     {"hostname": hostname, "port": port, "row_from": "", "row_to": ""})
                 self._set_response(200)
                 self.wfile.write(return_json.encode("utf8"))
-                print_info()
                 return
 
     def retrieve_cell(self, table_name):
@@ -202,7 +286,6 @@ class MyHandler(BaseHTTPRequestHandler):
             request_path = self.path
             if len(request_path.split("/")) >= 3:
                 path_1 = request_path.split("/")[2]
-                print(path_1)
                 # register a tablet server
                 if path_1 == 'join':
                     json_value = json.loads(data)
@@ -211,6 +294,7 @@ class MyHandler(BaseHTTPRequestHandler):
                     tablet_path = tablet_host + ":" + str(tablet_port)
                     tablet_dict[tablet_path] = []
                     tablet_list.append(tablet_path)
+                    self._set_response(200)
                 # create a table
                 elif path_1 == 'tables':
                     if not check_json(data):
@@ -225,6 +309,7 @@ class MyHandler(BaseHTTPRequestHandler):
                     json_value = json.loads(data)
                     update_table_info(json_value)
                     self._set_response(200)
+                    return
 
                 # lock a table
                 elif path_1 == 'lock':
@@ -233,9 +318,18 @@ class MyHandler(BaseHTTPRequestHandler):
                     client = json_value["client_id"]
                     self.lock_table(table_name, client)
 
-                print_info()
+                # handle shard request
+                elif path_1 == 'shard_request':
+                    json_value = json.loads(data)
+                    deal_with_shard_request(json_value)
+                    self._set_response(200)
 
-        self._set_response(200)
+                # update shard row key
+                elif path_1 == 'shard_finish':
+                    json_value = json.loads(data)
+                    update_shard_row(json_value)
+                    self._set_response(200)
+                    return
 
     def do_DELETE(self):
         content_length = self.headers['content-length']
@@ -243,7 +337,6 @@ class MyHandler(BaseHTTPRequestHandler):
             content_length = int(content_length)
             data = self.rfile.read(content_length)
             url = self.path.split('/')[1:]
-            print(url)
             if len(url) >= 2:
                 # delete a table
                 if url[1] == "tables":
@@ -262,7 +355,6 @@ class MyHandler(BaseHTTPRequestHandler):
                     client = json_value["client_id"]
                     self.release_lock(table_name, client)
 
-            print_info()
 
 
 if __name__ == "__main__":
@@ -276,6 +368,8 @@ if __name__ == "__main__":
     httpd = HTTPServer(server_address, handler_class)
 
     try:
+        t = Thread(target=run)
+        t.start()
         httpd.serve_forever()
     except KeyboardInterrupt:
         pass
