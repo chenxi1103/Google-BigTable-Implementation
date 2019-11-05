@@ -1,1 +1,0 @@
-{"name": "movies", "column_families": [{"column_family_key": "id", "columns": ["id"]}, {"column_family_key": "title", "columns": ["title"]}, {"column_family_key": "year", "columns": ["year"]}, {"column_family_key": "imdb_rating", "columns": ["imdb_rating"]}, {"column_family_key": "imdb_votes", "columns": ["imdb_votes"]}, {"column_family_key": "genres", "columns": ["genres"]}]}
