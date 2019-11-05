@@ -1,0 +1,711 @@
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "693", "data": [{"value": "2003", "time": 693}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "693", "data": [{"value": "2048.0", "time": 693}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "693", "data": [{"value": "1600.0", "time": 693}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "693", "data": [{"value": "3.0", "time": 693}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "693", "data": [{"value": "35.0", "time": 693}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "693", "data": [{"value": "105.0", "time": 693}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "693", "data": [{"value": "50.0", "time": 693}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "693", "data": [{"value": "10.0", "time": 693}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "693", "data": [{"value": "16.0", "time": 693}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "693", "data": [{"value": "185.0", "time": 693}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "693", "data": [{"value": "0.0", "time": 693}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "693", "data": [{"value": "1499.0", "time": 693}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "694", "data": [{"value": "Panasonic Lumix DMC-FX10", "time": 694}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "694", "data": [{"value": "2007", "time": 694}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "694", "data": [{"value": "2816.0", "time": 694}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "694", "data": [{"value": "2048.0", "time": 694}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "694", "data": [{"value": "6.0", "time": 694}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "694", "data": [{"value": "35.0", "time": 694}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "694", "data": [{"value": "105.0", "time": 694}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "694", "data": [{"value": "50.0", "time": 694}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "694", "data": [{"value": "5.0", "time": 694}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "694", "data": [{"value": "27.0", "time": 694}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "694", "data": [{"value": "155.0", "time": 694}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "694", "data": [{"value": "94.0", "time": 694}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "694", "data": [{"value": "1499.0", "time": 694}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "695", "data": [{"value": "Panasonic Lumix DMC-FX100", "time": 695}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "695", "data": [{"value": "2007", "time": 695}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "695", "data": [{"value": "4000.0", "time": 695}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "695", "data": [{"value": "3264.0", "time": 695}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "695", "data": [{"value": "12.0", "time": 695}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "695", "data": [{"value": "28.0", "time": 695}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "695", "data": [{"value": "100.0", "time": 695}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "695", "data": [{"value": "50.0", "time": 695}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "695", "data": [{"value": "5.0", "time": 695}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "695", "data": [{"value": "27.0", "time": 695}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "695", "data": [{"value": "150.0", "time": 695}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "695", "data": [{"value": "54.0", "time": 695}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "695", "data": [{"value": "1499.0", "time": 695}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "696", "data": [{"value": "Panasonic Lumix DMC-FX12", "time": 696}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "696", "data": [{"value": "2007", "time": 696}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "696", "data": [{"value": "3072.0", "time": 696}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "696", "data": [{"value": "2560.0", "time": 696}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "696", "data": [{"value": "7.0", "time": 696}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "696", "data": [{"value": "35.0", "time": 696}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "696", "data": [{"value": "105.0", "time": 696}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "696", "data": [{"value": "50.0", "time": 696}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "696", "data": [{"value": "5.0", "time": 696}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "696", "data": [{"value": "27.0", "time": 696}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "696", "data": [{"value": "155.0", "time": 696}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "696", "data": [{"value": "94.0", "time": 696}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "696", "data": [{"value": "1499.0", "time": 696}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "697", "data": [{"value": "Panasonic Lumix DMC-FX2", "time": 697}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "697", "data": [{"value": "2004", "time": 697}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "697", "data": [{"value": "2304.0", "time": 697}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "697", "data": [{"value": "1600.0", "time": 697}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "697", "data": [{"value": "4.0", "time": 697}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "697", "data": [{"value": "35.0", "time": 697}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "697", "data": [{"value": "105.0", "time": 697}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "697", "data": [{"value": "50.0", "time": 697}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "697", "data": [{"value": "5.0", "time": 697}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "697", "data": [{"value": "16.0", "time": 697}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "697", "data": [{"value": "148.0", "time": 697}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "697", "data": [{"value": "94.0", "time": 697}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "697", "data": [{"value": "1499.0", "time": 697}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "698", "data": [{"value": "Panasonic Lumix DMC-FX3", "time": 698}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "698", "data": [{"value": "2006", "time": 698}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "698", "data": [{"value": "2816.0", "time": 698}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "698", "data": [{"value": "2048.0", "time": 698}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "698", "data": [{"value": "6.0", "time": 698}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "698", "data": [{"value": "35.0", "time": 698}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "698", "data": [{"value": "105.0", "time": 698}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "698", "data": [{"value": "50.0", "time": 698}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "698", "data": [{"value": "5.0", "time": 698}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "698", "data": [{"value": "13.0", "time": 698}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "698", "data": [{"value": "165.0", "time": 698}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "698", "data": [{"value": "94.0", "time": 698}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "698", "data": [{"value": "299.0", "time": 698}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "699", "data": [{"value": "Panasonic Lumix DMC-FX30", "time": 699}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "699", "data": [{"value": "2007", "time": 699}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "699", "data": [{"value": "3072.0", "time": 699}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "699", "data": [{"value": "2560.0", "time": 699}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "699", "data": [{"value": "7.0", "time": 699}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "699", "data": [{"value": "28.0", "time": 699}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "699", "data": [{"value": "100.0", "time": 699}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "699", "data": [{"value": "50.0", "time": 699}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "699", "data": [{"value": "5.0", "time": 699}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "699", "data": [{"value": "27.0", "time": 699}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "699", "data": [{"value": "162.0", "time": 699}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "699", "data": [{"value": "95.0", "time": 699}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "699", "data": [{"value": "299.0", "time": 699}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "700", "data": [{"value": "Panasonic Lumix DMC-FX33", "time": 700}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "700", "data": [{"value": "2007", "time": 700}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "700", "data": [{"value": "3264.0", "time": 700}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "700", "data": [{"value": "2560.0", "time": 700}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "700", "data": [{"value": "8.0", "time": 700}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "700", "data": [{"value": "28.0", "time": 700}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "700", "data": [{"value": "100.0", "time": 700}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "700", "data": [{"value": "50.0", "time": 700}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "700", "data": [{"value": "5.0", "time": 700}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "700", "data": [{"value": "27.0", "time": 700}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "700", "data": [{"value": "154.0", "time": 700}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "700", "data": [{"value": "95.0", "time": 700}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "700", "data": [{"value": "299.0", "time": 700}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "701", "data": [{"value": "Panasonic Lumix DMC-FX5", "time": 701}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "701", "data": [{"value": "2003", "time": 701}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "701", "data": [{"value": "2304.0", "time": 701}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "701", "data": [{"value": "1600.0", "time": 701}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "701", "data": [{"value": "4.0", "time": 701}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "701", "data": [{"value": "35.0", "time": 701}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "701", "data": [{"value": "105.0", "time": 701}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "701", "data": [{"value": "50.0", "time": 701}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "701", "data": [{"value": "10.0", "time": 701}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "701", "data": [{"value": "16.0", "time": 701}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "701", "data": [{"value": "185.0", "time": 701}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "701", "data": [{"value": "0.0", "time": 701}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "701", "data": [{"value": "1499.0", "time": 701}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "702", "data": [{"value": "Panasonic Lumix DMC-FX50", "time": 702}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "702", "data": [{"value": "2006", "time": 702}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "702", "data": [{"value": "3072.0", "time": 702}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "702", "data": [{"value": "2560.0", "time": 702}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "702", "data": [{"value": "7.0", "time": 702}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "702", "data": [{"value": "28.0", "time": 702}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "702", "data": [{"value": "102.0", "time": 702}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "702", "data": [{"value": "50.0", "time": 702}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "702", "data": [{"value": "5.0", "time": 702}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "702", "data": [{"value": "0.0", "time": 702}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "702", "data": [{"value": "190.0", "time": 702}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "702", "data": [{"value": "98.0", "time": 702}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "702", "data": [{"value": "1499.0", "time": 702}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "703", "data": [{"value": "Panasonic Lumix DMC-FX55", "time": 703}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "703", "data": [{"value": "2007", "time": 703}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "703", "data": [{"value": "3264.0", "time": 703}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "703", "data": [{"value": "2560.0", "time": 703}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "703", "data": [{"value": "8.0", "time": 703}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "703", "data": [{"value": "28.0", "time": 703}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "703", "data": [{"value": "100.0", "time": 703}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "703", "data": [{"value": "50.0", "time": 703}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "703", "data": [{"value": "5.0", "time": 703}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "703", "data": [{"value": "27.0", "time": 703}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "703", "data": [{"value": "165.0", "time": 703}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "703", "data": [{"value": "95.0", "time": 703}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "703", "data": [{"value": "1499.0", "time": 703}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "704", "data": [{"value": "Panasonic Lumix DMC-FX7", "time": 704}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "704", "data": [{"value": "2004", "time": 704}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "704", "data": [{"value": "2560.0", "time": 704}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "704", "data": [{"value": "2048.0", "time": 704}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "704", "data": [{"value": "4.0", "time": 704}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "704", "data": [{"value": "35.0", "time": 704}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "704", "data": [{"value": "105.0", "time": 704}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "704", "data": [{"value": "50.0", "time": 704}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "704", "data": [{"value": "5.0", "time": 704}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "704", "data": [{"value": "16.0", "time": 704}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "704", "data": [{"value": "153.0", "time": 704}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "704", "data": [{"value": "94.0", "time": 704}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "704", "data": [{"value": "1499.0", "time": 704}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "705", "data": [{"value": "Panasonic Lumix DMC-FX8", "time": 705}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "705", "data": [{"value": "2005", "time": 705}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "705", "data": [{"value": "2560.0", "time": 705}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "705", "data": [{"value": "2560.0", "time": 705}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "705", "data": [{"value": "5.0", "time": 705}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "705", "data": [{"value": "35.0", "time": 705}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "705", "data": [{"value": "105.0", "time": 705}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "705", "data": [{"value": "50.0", "time": 705}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "705", "data": [{"value": "5.0", "time": 705}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "705", "data": [{"value": "16.0", "time": 705}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "705", "data": [{"value": "155.0", "time": 705}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "705", "data": [{"value": "94.0", "time": 705}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "705", "data": [{"value": "1499.0", "time": 705}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "706", "data": [{"value": "Panasonic Lumix DMC-FX9", "time": 706}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "706", "data": [{"value": "2005", "time": 706}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "706", "data": [{"value": "2816.0", "time": 706}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "706", "data": [{"value": "2048.0", "time": 706}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "706", "data": [{"value": "6.0", "time": 706}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "706", "data": [{"value": "35.0", "time": 706}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "706", "data": [{"value": "105.0", "time": 706}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "706", "data": [{"value": "50.0", "time": 706}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "706", "data": [{"value": "5.0", "time": 706}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "706", "data": [{"value": "16.0", "time": 706}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "706", "data": [{"value": "155.0", "time": 706}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "706", "data": [{"value": "94.0", "time": 706}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "706", "data": [{"value": "1499.0", "time": 706}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "707", "data": [{"value": "Panasonic Lumix DMC-FZ1", "time": 707}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "707", "data": [{"value": "2002", "time": 707}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "707", "data": [{"value": "1600.0", "time": 707}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "707", "data": [{"value": "1280.0", "time": 707}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "707", "data": [{"value": "2.0", "time": 707}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "707", "data": [{"value": "35.0", "time": 707}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "707", "data": [{"value": "420.0", "time": 707}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "707", "data": [{"value": "30.0", "time": 707}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "707", "data": [{"value": "3.0", "time": 707}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "707", "data": [{"value": "8.0", "time": 707}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "707", "data": [{"value": "354.0", "time": 707}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "707", "data": [{"value": "125.0", "time": 707}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "707", "data": [{"value": "149.0", "time": 707}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "708", "data": [{"value": "Panasonic Lumix DMC-FZ10", "time": 708}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "708", "data": [{"value": "2003", "time": 708}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "708", "data": [{"value": "2304.0", "time": 708}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "708", "data": [{"value": "1600.0", "time": 708}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "708", "data": [{"value": "4.0", "time": 708}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "708", "data": [{"value": "35.0", "time": 708}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "708", "data": [{"value": "420.0", "time": 708}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "708", "data": [{"value": "30.0", "time": 708}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "708", "data": [{"value": "5.0", "time": 708}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "708", "data": [{"value": "16.0", "time": 708}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "708", "data": [{"value": "550.0", "time": 708}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "708", "data": [{"value": "87.0", "time": 708}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "708", "data": [{"value": "149.0", "time": 708}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "709", "data": [{"value": "Panasonic Lumix DMC-FZ18", "time": 709}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "709", "data": [{"value": "2007", "time": 709}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "709", "data": [{"value": "3264.0", "time": 709}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "709", "data": [{"value": "2560.0", "time": 709}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "709", "data": [{"value": "8.0", "time": 709}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "709", "data": [{"value": "28.0", "time": 709}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "709", "data": [{"value": "504.0", "time": 709}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "709", "data": [{"value": "30.0", "time": 709}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "709", "data": [{"value": "1.0", "time": 709}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "709", "data": [{"value": "27.0", "time": 709}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "709", "data": [{"value": "407.0", "time": 709}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "709", "data": [{"value": "118.0", "time": 709}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "709", "data": [{"value": "149.0", "time": 709}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "710", "data": [{"value": "Panasonic Lumix DMC-FZ2", "time": 710}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "710", "data": [{"value": "2003", "time": 710}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "710", "data": [{"value": "1600.0", "time": 710}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "710", "data": [{"value": "1280.0", "time": 710}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "710", "data": [{"value": "2.0", "time": 710}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "710", "data": [{"value": "35.0", "time": 710}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "710", "data": [{"value": "420.0", "time": 710}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "710", "data": [{"value": "30.0", "time": 710}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "710", "data": [{"value": "5.0", "time": 710}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "710", "data": [{"value": "0.0", "time": 710}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "710", "data": [{"value": "350.0", "time": 710}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "710", "data": [{"value": "114.0", "time": 710}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "710", "data": [{"value": "149.0", "time": 710}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "711", "data": [{"value": "Panasonic Lumix DMC-FZ20", "time": 711}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "711", "data": [{"value": "2004", "time": 711}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "711", "data": [{"value": "2560.0", "time": 711}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "711", "data": [{"value": "2048.0", "time": 711}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "711", "data": [{"value": "5.0", "time": 711}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "711", "data": [{"value": "36.0", "time": 711}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "711", "data": [{"value": "432.0", "time": 711}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "711", "data": [{"value": "30.0", "time": 711}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "711", "data": [{"value": "5.0", "time": 711}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "711", "data": [{"value": "16.0", "time": 711}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "711", "data": [{"value": "556.0", "time": 711}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "711", "data": [{"value": "87.0", "time": 711}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "711", "data": [{"value": "149.0", "time": 711}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "712", "data": [{"value": "Panasonic Lumix DMC-FZ3", "time": 712}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "712", "data": [{"value": "2004", "time": 712}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "712", "data": [{"value": "2016.0", "time": 712}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "712", "data": [{"value": "1600.0", "time": 712}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "712", "data": [{"value": "3.0", "time": 712}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "712", "data": [{"value": "35.0", "time": 712}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "712", "data": [{"value": "420.0", "time": 712}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "712", "data": [{"value": "30.0", "time": 712}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "712", "data": [{"value": "5.0", "time": 712}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "712", "data": [{"value": "16.0", "time": 712}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "712", "data": [{"value": "326.0", "time": 712}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "712", "data": [{"value": "108.0", "time": 712}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "712", "data": [{"value": "299.0", "time": 712}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "713", "data": [{"value": "Panasonic Lumix DMC-FZ30", "time": 713}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "713", "data": [{"value": "2005", "time": 713}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "713", "data": [{"value": "3264.0", "time": 713}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "713", "data": [{"value": "2560.0", "time": 713}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "713", "data": [{"value": "8.0", "time": 713}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "713", "data": [{"value": "35.0", "time": 713}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "713", "data": [{"value": "420.0", "time": 713}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "713", "data": [{"value": "30.0", "time": 713}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "713", "data": [{"value": "5.0", "time": 713}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "713", "data": [{"value": "32.0", "time": 713}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "713", "data": [{"value": "740.0", "time": 713}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "713", "data": [{"value": "141.0", "time": 713}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "713", "data": [{"value": "299.0", "time": 713}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "714", "data": [{"value": "Panasonic Lumix DMC-FZ4", "time": 714}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "714", "data": [{"value": "2005", "time": 714}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "714", "data": [{"value": "2304.0", "time": 714}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "714", "data": [{"value": "1600.0", "time": 714}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "714", "data": [{"value": "4.0", "time": 714}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "714", "data": [{"value": "35.0", "time": 714}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "714", "data": [{"value": "420.0", "time": 714}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "714", "data": [{"value": "50.0", "time": 714}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "714", "data": [{"value": "5.0", "time": 714}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "714", "data": [{"value": "8.0", "time": 714}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "714", "data": [{"value": "326.0", "time": 714}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "714", "data": [{"value": "102.0", "time": 714}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "714", "data": [{"value": "149.0", "time": 714}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "715", "data": [{"value": "Panasonic Lumix DMC-FZ5", "time": 715}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "715", "data": [{"value": "2005", "time": 715}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "715", "data": [{"value": "2560.0", "time": 715}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "715", "data": [{"value": "2048.0", "time": 715}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "715", "data": [{"value": "4.0", "time": 715}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "715", "data": [{"value": "36.0", "time": 715}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "715", "data": [{"value": "432.0", "time": 715}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "715", "data": [{"value": "50.0", "time": 715}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "715", "data": [{"value": "5.0", "time": 715}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "715", "data": [{"value": "16.0", "time": 715}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "715", "data": [{"value": "326.0", "time": 715}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "715", "data": [{"value": "108.0", "time": 715}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "715", "data": [{"value": "149.0", "time": 715}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "716", "data": [{"value": "Panasonic Lumix DMC-FZ50", "time": 716}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "716", "data": [{"value": "2006", "time": 716}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "716", "data": [{"value": "3648.0", "time": 716}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "716", "data": [{"value": "3264.0", "time": 716}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "716", "data": [{"value": "10.0", "time": 716}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "716", "data": [{"value": "35.0", "time": 716}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "716", "data": [{"value": "420.0", "time": 716}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "716", "data": [{"value": "30.0", "time": 716}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "716", "data": [{"value": "5.0", "time": 716}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "716", "data": [{"value": "32.0", "time": 716}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "716", "data": [{"value": "734.0", "time": 716}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "716", "data": [{"value": "141.0", "time": 716}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "716", "data": [{"value": "149.0", "time": 716}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "717", "data": [{"value": "Panasonic Lumix DMC-FZ7", "time": 717}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "717", "data": [{"value": "2006", "time": 717}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "717", "data": [{"value": "2816.0", "time": 717}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "717", "data": [{"value": "2304.0", "time": 717}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "717", "data": [{"value": "6.0", "time": 717}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "717", "data": [{"value": "36.0", "time": 717}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "717", "data": [{"value": "432.0", "time": 717}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "717", "data": [{"value": "30.0", "time": 717}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "717", "data": [{"value": "5.0", "time": 717}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "717", "data": [{"value": "16.0", "time": 717}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "717", "data": [{"value": "340.0", "time": 717}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "717", "data": [{"value": "113.0", "time": 717}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "717", "data": [{"value": "149.0", "time": 717}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "718", "data": [{"value": "Panasonic Lumix DMC-FZ8", "time": 718}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "718", "data": [{"value": "2007", "time": 718}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "718", "data": [{"value": "3072.0", "time": 718}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "718", "data": [{"value": "2560.0", "time": 718}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "718", "data": [{"value": "7.0", "time": 718}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "718", "data": [{"value": "36.0", "time": 718}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "718", "data": [{"value": "432.0", "time": 718}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "718", "data": [{"value": "30.0", "time": 718}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "718", "data": [{"value": "5.0", "time": 718}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "718", "data": [{"value": "27.0", "time": 718}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "718", "data": [{"value": "340.0", "time": 718}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "718", "data": [{"value": "113.0", "time": 718}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "718", "data": [{"value": "149.0", "time": 718}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "719", "data": [{"value": "Panasonic Lumix DMC-L1", "time": 719}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "719", "data": [{"value": "2006", "time": 719}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "719", "data": [{"value": "3136.0", "time": 719}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "719", "data": [{"value": "2560.0", "time": 719}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "719", "data": [{"value": "7.0", "time": 719}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "719", "data": [{"value": "0.0", "time": 719}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "719", "data": [{"value": "0.0", "time": 719}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "719", "data": [{"value": "0.0", "time": 719}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "719", "data": [{"value": "0.0", "time": 719}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "719", "data": [{"value": "0.0", "time": 719}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "719", "data": [{"value": "606.0", "time": 719}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "719", "data": [{"value": "146.0", "time": 719}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "719", "data": [{"value": "1499.0", "time": 719}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "720", "data": [{"value": "Panasonic Lumix DMC-L10", "time": 720}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "720", "data": [{"value": "2007", "time": 720}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "720", "data": [{"value": "3648.0", "time": 720}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "720", "data": [{"value": "2816.0", "time": 720}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "720", "data": [{"value": "10.0", "time": 720}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "720", "data": [{"value": "0.0", "time": 720}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "720", "data": [{"value": "0.0", "time": 720}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "720", "data": [{"value": "0.0", "time": 720}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "720", "data": [{"value": "0.0", "time": 720}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "720", "data": [{"value": "0.0", "time": 720}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "720", "data": [{"value": "556.0", "time": 720}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "720", "data": [{"value": "135.0", "time": 720}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "720", "data": [{"value": "1499.0", "time": 720}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "721", "data": [{"value": "Panasonic Lumix DMC-LC1", "time": 721}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "721", "data": [{"value": "2004", "time": 721}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "721", "data": [{"value": "2560.0", "time": 721}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "721", "data": [{"value": "2048.0", "time": 721}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "721", "data": [{"value": "4.0", "time": 721}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "721", "data": [{"value": "28.0", "time": 721}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "721", "data": [{"value": "90.0", "time": 721}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "721", "data": [{"value": "30.0", "time": 721}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "721", "data": [{"value": "30.0", "time": 721}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "721", "data": [{"value": "16.0", "time": 721}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "721", "data": [{"value": "705.0", "time": 721}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "721", "data": [{"value": "135.0", "time": 721}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "721", "data": [{"value": "1499.0", "time": 721}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "722", "data": [{"value": "Panasonic Lumix DMC-LC20", "time": 722}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "722", "data": [{"value": "2002", "time": 722}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "722", "data": [{"value": "1600.0", "time": 722}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "722", "data": [{"value": "1024.0", "time": 722}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "722", "data": [{"value": "1.0", "time": 722}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "722", "data": [{"value": "35.0", "time": 722}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "722", "data": [{"value": "105.0", "time": 722}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "722", "data": [{"value": "50.0", "time": 722}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "722", "data": [{"value": "15.0", "time": 722}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "722", "data": [{"value": "8.0", "time": 722}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "722", "data": [{"value": "290.0", "time": 722}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "722", "data": [{"value": "99.0", "time": 722}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "722", "data": [{"value": "1499.0", "time": 722}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "723", "data": [{"value": "Panasonic Lumix DMC-LC33", "time": 723}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "723", "data": [{"value": "2003", "time": 723}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "723", "data": [{"value": "2048.0", "time": 723}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "723", "data": [{"value": "1600.0", "time": 723}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "723", "data": [{"value": "3.0", "time": 723}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "723", "data": [{"value": "35.0", "time": 723}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "723", "data": [{"value": "105.0", "time": 723}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "723", "data": [{"value": "50.0", "time": 723}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "723", "data": [{"value": "10.0", "time": 723}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "723", "data": [{"value": "32.0", "time": 723}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "723", "data": [{"value": "215.0", "time": 723}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "723", "data": [{"value": "96.0", "time": 723}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "723", "data": [{"value": "1499.0", "time": 723}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "724", "data": [{"value": "Panasonic Lumix DMC-LC40", "time": 724}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "724", "data": [{"value": "2002", "time": 724}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "724", "data": [{"value": "2240.0", "time": 724}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "724", "data": [{"value": "1600.0", "time": 724}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "724", "data": [{"value": "3.0", "time": 724}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "724", "data": [{"value": "33.0", "time": 724}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "724", "data": [{"value": "100.0", "time": 724}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "724", "data": [{"value": "30.0", "time": 724}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "724", "data": [{"value": "6.0", "time": 724}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "724", "data": [{"value": "16.0", "time": 724}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "724", "data": [{"value": "420.0", "time": 724}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "724", "data": [{"value": "104.0", "time": 724}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "724", "data": [{"value": "1499.0", "time": 724}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "725", "data": [{"value": "Panasonic Lumix DMC-LC43", "time": 725}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "725", "data": [{"value": "2003", "time": 725}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "725", "data": [{"value": "2304.0", "time": 725}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "725", "data": [{"value": "1600.0", "time": 725}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "725", "data": [{"value": "4.0", "time": 725}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "725", "data": [{"value": "35.0", "time": 725}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "725", "data": [{"value": "105.0", "time": 725}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "725", "data": [{"value": "50.0", "time": 725}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "725", "data": [{"value": "10.0", "time": 725}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "725", "data": [{"value": "32.0", "time": 725}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "725", "data": [{"value": "215.0", "time": 725}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "725", "data": [{"value": "96.0", "time": 725}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "725", "data": [{"value": "1499.0", "time": 725}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "726", "data": [{"value": "Panasonic Lumix DMC-LC5", "time": 726}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "726", "data": [{"value": "2001", "time": 726}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "726", "data": [{"value": "2240.0", "time": 726}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "726", "data": [{"value": "1600.0", "time": 726}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "726", "data": [{"value": "3.0", "time": 726}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "726", "data": [{"value": "33.0", "time": 726}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "726", "data": [{"value": "100.0", "time": 726}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "726", "data": [{"value": "30.0", "time": 726}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "726", "data": [{"value": "6.0", "time": 726}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "726", "data": [{"value": "32.0", "time": 726}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "726", "data": [{"value": "435.0", "time": 726}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "726", "data": [{"value": "128.0", "time": 726}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "726", "data": [{"value": "1499.0", "time": 726}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "727", "data": [{"value": "Panasonic Lumix DMC-LC50", "time": 727}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "727", "data": [{"value": "2004", "time": 727}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "727", "data": [{"value": "2048.0", "time": 727}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "727", "data": [{"value": "1600.0", "time": 727}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "727", "data": [{"value": "3.0", "time": 727}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "727", "data": [{"value": "35.0", "time": 727}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "727", "data": [{"value": "105.0", "time": 727}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "727", "data": [{"value": "50.0", "time": 727}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "727", "data": [{"value": "10.0", "time": 727}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "727", "data": [{"value": "16.0", "time": 727}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "727", "data": [{"value": "210.0", "time": 727}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "727", "data": [{"value": "65.0", "time": 727}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "727", "data": [{"value": "1499.0", "time": 727}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "728", "data": [{"value": "Panasonic Lumix DMC-LC70", "time": 728}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "728", "data": [{"value": "2004", "time": 728}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "728", "data": [{"value": "2304.0", "time": 728}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "728", "data": [{"value": "1600.0", "time": 728}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "728", "data": [{"value": "4.0", "time": 728}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "728", "data": [{"value": "35.0", "time": 728}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "728", "data": [{"value": "105.0", "time": 728}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "728", "data": [{"value": "50.0", "time": 728}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "728", "data": [{"value": "10.0", "time": 728}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "728", "data": [{"value": "16.0", "time": 728}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "728", "data": [{"value": "210.0", "time": 728}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "728", "data": [{"value": "65.0", "time": 728}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "728", "data": [{"value": "1499.0", "time": 728}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "729", "data": [{"value": "Panasonic Lumix DMC-LC80", "time": 729}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "729", "data": [{"value": "2004", "time": 729}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "729", "data": [{"value": "2560.0", "time": 729}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "729", "data": [{"value": "2048.0", "time": 729}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "729", "data": [{"value": "4.0", "time": 729}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "729", "data": [{"value": "35.0", "time": 729}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "729", "data": [{"value": "105.0", "time": 729}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "729", "data": [{"value": "50.0", "time": 729}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "729", "data": [{"value": "10.0", "time": 729}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "729", "data": [{"value": "16.0", "time": 729}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "729", "data": [{"value": "207.0", "time": 729}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "729", "data": [{"value": "88.0", "time": 729}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "729", "data": [{"value": "1499.0", "time": 729}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "730", "data": [{"value": "Panasonic Lumix DMC-LS1", "time": 730}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "730", "data": [{"value": "2005", "time": 730}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "730", "data": [{"value": "2304.0", "time": 730}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "730", "data": [{"value": "1600.0", "time": 730}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "730", "data": [{"value": "4.0", "time": 730}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "730", "data": [{"value": "35.0", "time": 730}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "730", "data": [{"value": "105.0", "time": 730}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "730", "data": [{"value": "50.0", "time": 730}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "730", "data": [{"value": "5.0", "time": 730}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "730", "data": [{"value": "14.0", "time": 730}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "730", "data": [{"value": "188.0", "time": 730}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "730", "data": [{"value": "94.0", "time": 730}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "730", "data": [{"value": "1499.0", "time": 730}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "731", "data": [{"value": "Panasonic Lumix DMC-LS2", "time": 731}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "731", "data": [{"value": "2006", "time": 731}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "731", "data": [{"value": "2560.0", "time": 731}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "731", "data": [{"value": "2048.0", "time": 731}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "731", "data": [{"value": "5.0", "time": 731}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "731", "data": [{"value": "35.0", "time": 731}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "731", "data": [{"value": "105.0", "time": 731}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "731", "data": [{"value": "50.0", "time": 731}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "731", "data": [{"value": "5.0", "time": 731}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "731", "data": [{"value": "14.0", "time": 731}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "731", "data": [{"value": "188.0", "time": 731}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "731", "data": [{"value": "111.0", "time": 731}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "731", "data": [{"value": "1499.0", "time": 731}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "732", "data": [{"value": "Panasonic Lumix DMC-LS60", "time": 732}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "732", "data": [{"value": "2007", "time": 732}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "732", "data": [{"value": "2816.0", "time": 732}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "732", "data": [{"value": "2048.0", "time": 732}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "732", "data": [{"value": "6.0", "time": 732}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "732", "data": [{"value": "35.0", "time": 732}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "732", "data": [{"value": "105.0", "time": 732}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "732", "data": [{"value": "50.0", "time": 732}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "732", "data": [{"value": "5.0", "time": 732}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "732", "data": [{"value": "27.0", "time": 732}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "732", "data": [{"value": "188.0", "time": 732}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "732", "data": [{"value": "94.0", "time": 732}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "732", "data": [{"value": "149.0", "time": 732}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "733", "data": [{"value": "Panasonic Lumix DMC-LS75", "time": 733}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "733", "data": [{"value": "2007", "time": 733}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "733", "data": [{"value": "3072.0", "time": 733}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "733", "data": [{"value": "2560.0", "time": 733}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "733", "data": [{"value": "7.0", "time": 733}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "733", "data": [{"value": "35.0", "time": 733}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "733", "data": [{"value": "105.0", "time": 733}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "733", "data": [{"value": "50.0", "time": 733}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "733", "data": [{"value": "5.0", "time": 733}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "733", "data": [{"value": "27.0", "time": 733}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "733", "data": [{"value": "188.0", "time": 733}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "733", "data": [{"value": "94.0", "time": 733}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "733", "data": [{"value": "1499.0", "time": 733}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "734", "data": [{"value": "Panasonic Lumix DMC-LX1", "time": 734}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "734", "data": [{"value": "2005", "time": 734}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "734", "data": [{"value": "3840.0", "time": 734}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "734", "data": [{"value": "3072.0", "time": 734}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "734", "data": [{"value": "8.0", "time": 734}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "734", "data": [{"value": "28.0", "time": 734}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "734", "data": [{"value": "112.0", "time": 734}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "734", "data": [{"value": "50.0", "time": 734}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "734", "data": [{"value": "5.0", "time": 734}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "734", "data": [{"value": "32.0", "time": 734}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "734", "data": [{"value": "220.0", "time": 734}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "734", "data": [{"value": "106.0", "time": 734}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "734", "data": [{"value": "1499.0", "time": 734}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "735", "data": [{"value": "Panasonic Lumix DMC-LX2", "time": 735}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "735", "data": [{"value": "2006", "time": 735}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "735", "data": [{"value": "4224.0", "time": 735}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "735", "data": [{"value": "3840.0", "time": 735}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "735", "data": [{"value": "10.0", "time": 735}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "735", "data": [{"value": "28.0", "time": 735}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "735", "data": [{"value": "112.0", "time": 735}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "735", "data": [{"value": "50.0", "time": 735}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "735", "data": [{"value": "5.0", "time": 735}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "735", "data": [{"value": "13.0", "time": 735}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "735", "data": [{"value": "220.0", "time": 735}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "735", "data": [{"value": "106.0", "time": 735}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "735", "data": [{"value": "1499.0", "time": 735}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "736", "data": [{"value": "Panasonic Lumix DMC-LZ1", "time": 736}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "736", "data": [{"value": "2005", "time": 736}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "736", "data": [{"value": "2304.0", "time": 736}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "736", "data": [{"value": "1600.0", "time": 736}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "736", "data": [{"value": "4.0", "time": 736}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "736", "data": [{"value": "37.0", "time": 736}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "736", "data": [{"value": "222.0", "time": 736}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "736", "data": [{"value": "50.0", "time": 736}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "736", "data": [{"value": "5.0", "time": 736}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "736", "data": [{"value": "14.0", "time": 736}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "736", "data": [{"value": "224.0", "time": 736}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "736", "data": [{"value": "101.0", "time": 736}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "736", "data": [{"value": "149.0", "time": 736}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "737", "data": [{"value": "Panasonic Lumix DMC-LZ2", "time": 737}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "737", "data": [{"value": "2005", "time": 737}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "737", "data": [{"value": "2560.0", "time": 737}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "737", "data": [{"value": "2048.0", "time": 737}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "737", "data": [{"value": "5.0", "time": 737}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "737", "data": [{"value": "37.0", "time": 737}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "737", "data": [{"value": "222.0", "time": 737}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "737", "data": [{"value": "50.0", "time": 737}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "737", "data": [{"value": "5.0", "time": 737}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "737", "data": [{"value": "14.0", "time": 737}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "737", "data": [{"value": "224.0", "time": 737}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "737", "data": [{"value": "101.0", "time": 737}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "737", "data": [{"value": "149.0", "time": 737}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "738", "data": [{"value": "Panasonic Lumix DMC-LZ3", "time": 738}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "738", "data": [{"value": "2006", "time": 738}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "738", "data": [{"value": "2560.0", "time": 738}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "738", "data": [{"value": "2048.0", "time": 738}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "738", "data": [{"value": "5.0", "time": 738}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "738", "data": [{"value": "37.0", "time": 738}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "738", "data": [{"value": "222.0", "time": 738}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "738", "data": [{"value": "50.0", "time": 738}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "738", "data": [{"value": "5.0", "time": 738}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "738", "data": [{"value": "14.0", "time": 738}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "738", "data": [{"value": "230.0", "time": 738}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "738", "data": [{"value": "100.0", "time": 738}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "738", "data": [{"value": "149.0", "time": 738}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "739", "data": [{"value": "Panasonic Lumix DMC-LZ5", "time": 739}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "739", "data": [{"value": "2006", "time": 739}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "739", "data": [{"value": "2816.0", "time": 739}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "739", "data": [{"value": "2048.0", "time": 739}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "739", "data": [{"value": "6.0", "time": 739}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "739", "data": [{"value": "37.0", "time": 739}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "739", "data": [{"value": "222.0", "time": 739}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "739", "data": [{"value": "50.0", "time": 739}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "739", "data": [{"value": "5.0", "time": 739}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "739", "data": [{"value": "14.0", "time": 739}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "739", "data": [{"value": "230.0", "time": 739}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "739", "data": [{"value": "100.0", "time": 739}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "739", "data": [{"value": "149.0", "time": 739}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "740", "data": [{"value": "Panasonic Lumix DMC-LZ6", "time": 740}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "740", "data": [{"value": "2007", "time": 740}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "740", "data": [{"value": "3072.0", "time": 740}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "740", "data": [{"value": "2560.0", "time": 740}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "740", "data": [{"value": "7.0", "time": 740}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "740", "data": [{"value": "37.0", "time": 740}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "740", "data": [{"value": "222.0", "time": 740}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "740", "data": [{"value": "50.0", "time": 740}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "740", "data": [{"value": "5.0", "time": 740}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "740", "data": [{"value": "27.0", "time": 740}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "740", "data": [{"value": "230.0", "time": 740}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "740", "data": [{"value": "99.0", "time": 740}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "740", "data": [{"value": "149.0", "time": 740}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "741", "data": [{"value": "Panasonic Lumix DMC-LZ7", "time": 741}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "741", "data": [{"value": "2007", "time": 741}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "741", "data": [{"value": "3072.0", "time": 741}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "741", "data": [{"value": "2560.0", "time": 741}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "741", "data": [{"value": "7.0", "time": 741}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "741", "data": [{"value": "37.0", "time": 741}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "741", "data": [{"value": "222.0", "time": 741}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "741", "data": [{"value": "50.0", "time": 741}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "741", "data": [{"value": "5.0", "time": 741}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "741", "data": [{"value": "27.0", "time": 741}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "741", "data": [{"value": "234.0", "time": 741}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "741", "data": [{"value": "99.0", "time": 741}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "741", "data": [{"value": "149.0", "time": 741}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "742", "data": [{"value": "Panasonic Lumix DMC-TZ1", "time": 742}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "742", "data": [{"value": "2006", "time": 742}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "742", "data": [{"value": "2560.0", "time": 742}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "742", "data": [{"value": "2048.0", "time": 742}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "742", "data": [{"value": "4.0", "time": 742}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "742", "data": [{"value": "35.0", "time": 742}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "742", "data": [{"value": "350.0", "time": 742}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "742", "data": [{"value": "40.0", "time": 742}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "742", "data": [{"value": "5.0", "time": 742}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "742", "data": [{"value": "13.0", "time": 742}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "742", "data": [{"value": "250.0", "time": 742}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "742", "data": [{"value": "112.0", "time": 742}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "742", "data": [{"value": "299.0", "time": 742}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "743", "data": [{"value": "Panasonic Lumix DMC-TZ2", "time": 743}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "743", "data": [{"value": "2007", "time": 743}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "743", "data": [{"value": "2816.0", "time": 743}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "743", "data": [{"value": "2048.0", "time": 743}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "743", "data": [{"value": "6.0", "time": 743}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "743", "data": [{"value": "28.0", "time": 743}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "743", "data": [{"value": "280.0", "time": 743}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "743", "data": [{"value": "50.0", "time": 743}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "743", "data": [{"value": "5.0", "time": 743}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "743", "data": [{"value": "13.0", "time": 743}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "743", "data": [{"value": "260.0", "time": 743}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "743", "data": [{"value": "105.0", "time": 743}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "743", "data": [{"value": "299.0", "time": 743}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "744", "data": [{"value": "Panasonic Lumix DMC-TZ3", "time": 744}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "744", "data": [{"value": "2007", "time": 744}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "744", "data": [{"value": "3072.0", "time": 744}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "744", "data": [{"value": "2560.0", "time": 744}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "744", "data": [{"value": "7.0", "time": 744}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "744", "data": [{"value": "28.0", "time": 744}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "744", "data": [{"value": "280.0", "time": 744}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "744", "data": [{"value": "50.0", "time": 744}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "744", "data": [{"value": "5.0", "time": 744}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "744", "data": [{"value": "13.0", "time": 744}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "744", "data": [{"value": "280.0", "time": 744}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "744", "data": [{"value": "105.0", "time": 744}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "744", "data": [{"value": "299.0", "time": 744}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "745", "data": [{"value": "Pentax EI-100", "time": 745}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "745", "data": [{"value": "2001", "time": 745}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "745", "data": [{"value": "1280.0", "time": 745}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "745", "data": [{"value": "640.0", "time": 745}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "745", "data": [{"value": "1.0", "time": 745}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "745", "data": [{"value": "42.0", "time": 745}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "745", "data": [{"value": "42.0", "time": 745}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "745", "data": [{"value": "60.0", "time": 745}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "745", "data": [{"value": "30.0", "time": 745}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "745", "data": [{"value": "8.0", "time": 745}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "745", "data": [{"value": "240.0", "time": 745}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "745", "data": [{"value": "105.0", "time": 745}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "745", "data": [{"value": "509.0", "time": 745}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "746", "data": [{"value": "Pentax EI-200", "time": 746}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "746", "data": [{"value": "2000", "time": 746}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "746", "data": [{"value": "1600.0", "time": 746}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "746", "data": [{"value": "800.0", "time": 746}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "746", "data": [{"value": "1.0", "time": 746}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "746", "data": [{"value": "34.0", "time": 746}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "746", "data": [{"value": "108.0", "time": 746}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "746", "data": [{"value": "50.0", "time": 746}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "746", "data": [{"value": "10.0", "time": 746}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "746", "data": [{"value": "16.0", "time": 746}]}
+2*cameras*{"column_family": "Weight (inc. batteries)", "column": "Weight (inc. batteries)", "row": "746", "data": [{"value": "390.0", "time": 746}]}
+2*cameras*{"column_family": "Dimensions", "column": "Dimensions", "row": "746", "data": [{"value": "128.0", "time": 746}]}
+2*cameras*{"column_family": "Price", "column": "Price", "row": "746", "data": [{"value": "509.0", "time": 746}]}
+2*cameras*{"column_family": "Model", "column": "Model", "row": "747", "data": [{"value": "Pentax EI-2000", "time": 747}]}
+2*cameras*{"column_family": "Release date", "column": "Release date", "row": "747", "data": [{"value": "2000", "time": 747}]}
+2*cameras*{"column_family": "Max resolution", "column": "Max resolution", "row": "747", "data": [{"value": "1600.0", "time": 747}]}
+2*cameras*{"column_family": "Low resolution", "column": "Low resolution", "row": "747", "data": [{"value": "800.0", "time": 747}]}
+2*cameras*{"column_family": "Effective pixels", "column": "Effective pixels", "row": "747", "data": [{"value": "1.0", "time": 747}]}
+2*cameras*{"column_family": "Zoom wide (W)", "column": "Zoom wide (W)", "row": "747", "data": [{"value": "34.0", "time": 747}]}
+2*cameras*{"column_family": "Zoom tele (T)", "column": "Zoom tele (T)", "row": "747", "data": [{"value": "108.0", "time": 747}]}
+2*cameras*{"column_family": "Normal focus range", "column": "Normal focus range", "row": "747", "data": [{"value": "50.0", "time": 747}]}
+2*cameras*{"column_family": "Macro focus range", "column": "Macro focus range", "row": "747", "data": [{"value": "10.0", "time": 747}]}
+2*cameras*{"column_family": "Storage included", "column": "Storage included", "row": "747", "data": [{"value": "16.0", "time": 747}]}
